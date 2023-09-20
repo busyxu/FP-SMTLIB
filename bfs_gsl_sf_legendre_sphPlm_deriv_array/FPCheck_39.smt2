@@ -1,0 +1,23 @@
+(declare-fun b_ack!165 () (_ BitVec 32))
+(declare-fun a_ack!167 () (_ BitVec 32))
+(declare-fun c_ack!166 () (_ BitVec 64))
+(declare-fun FPCHECK_FINVALID_LOG
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (bvslt b_ack!165 #x00000000)))
+(assert (not (bvslt a_ack!167 b_ack!165)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!166) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!166) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (= #x00000000 b_ack!165)))
+(assert (= #x00000001 b_ack!165))
+(assert (not (bvslt b_ack!165 #x00000000)))
+(assert (not (bvslt a_ack!167 b_ack!165)))
+(assert (not (= #x00000000 b_ack!165)))
+(assert (not (fp.eq ((_ to_fp 11 53) roundNearestTiesToEven (bvsub a_ack!167 b_ack!165))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FINVALID_LOG
+  ((_ to_fp 11 53) roundNearestTiesToEven (bvsub a_ack!167 b_ack!165))
+  ((_ to_fp 11 53) roundNearestTiesToEven (bvsub a_ack!167 b_ack!165))))
+
+(check-sat)
+(exit)

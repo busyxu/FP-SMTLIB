@@ -1,0 +1,14 @@
+(declare-fun FPCHECK_FMUL_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun b_ack!17 () (_ BitVec 64))
+(assert (FPCHECK_FMUL_UNDERFLOW
+  (fp.sub roundNearestTiesToEven
+          ((_ to_fp 11 53) #x8000000000000000)
+          ((_ to_fp 11 53) b_ack!17))
+  (fp.sub roundNearestTiesToEven
+          ((_ to_fp 11 53) #x8000000000000000)
+          ((_ to_fp 11 53) b_ack!17))))
+
+(check-sat)
+(exit)

@@ -1,0 +1,10 @@
+(declare-fun x_ack!504 () (_ BitVec 64))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!504) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!504) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (let ((a!1 (or (fp.isNaN (fp.abs ((_ to_fp 11 53) x_ack!504)))
+               (fp.eq (fp.abs ((_ to_fp 11 53) x_ack!504))
+                      ((_ to_fp 11 53) #x7ff0000000000000)))))
+  (not (not a!1))))
+
+(check-sat)
+(exit)

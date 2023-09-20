@@ -1,0 +1,18 @@
+(declare-fun y1_ack!280 () (_ BitVec 64))
+(declare-fun x1_ack!283 () (_ BitVec 64))
+(declare-fun y2_ack!282 () (_ BitVec 64))
+(declare-fun x2_ack!281 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_atan2 ((_ BitVec 64) (_ BitVec 64)) (_ FloatingPoint 11 53))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x1_ack!283))
+             (fp.abs ((_ to_fp 11 53) y1_ack!280)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x1_ack!283) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x2_ack!281))
+             (fp.abs ((_ to_fp 11 53) y2_ack!282)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x2_ack!281) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FMUL_UNDERFLOW #x7ff0000000000001 (CF_atan2 y2_ack!282 x2_ack!281)))
+
+(check-sat)
+(exit)

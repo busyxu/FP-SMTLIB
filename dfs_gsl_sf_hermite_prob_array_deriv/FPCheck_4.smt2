@@ -1,0 +1,17 @@
+(declare-fun b_ack!32 () (_ BitVec 32))
+(declare-fun a_ack!34 () (_ BitVec 32))
+(declare-fun c_ack!33 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (bvslt b_ack!32 #x00000000)))
+(assert (not (bvslt a_ack!34 #x00000000)))
+(assert (= #x00000000 a_ack!34))
+(assert (not (bvslt b_ack!32 #x00000000)))
+(assert (not (= #x00000000 b_ack!32)))
+(assert (not (= #x00000001 b_ack!32)))
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) c_ack!33)) ((_ to_fp 11 53) #x3ff0000000000000)))
+(assert (FPCHECK_FDIV_UNDERFLOW #x7feccccccccccccc (fp.abs ((_ to_fp 11 53) c_ack!33))))
+
+(check-sat)
+(exit)

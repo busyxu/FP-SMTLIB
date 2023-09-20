@@ -1,0 +1,12 @@
+(declare-fun b_ack!372 () (_ BitVec 64))
+(declare-fun a_ack!373 () (_ BitVec 64))
+(declare-fun FPCHECK_FINVALID_LOG ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!372) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!372) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!373) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) a_ack!373) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.gt ((_ to_fp 11 53) b_ack!372) ((_ to_fp 11 53) #x3fd0000000000000)))
+(assert (FPCHECK_FINVALID_LOG b_ack!372 b_ack!372))
+
+(check-sat)
+(exit)

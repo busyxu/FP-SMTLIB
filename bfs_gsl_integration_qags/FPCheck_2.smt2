@@ -1,0 +1,12 @@
+(declare-fun limit_ack!21 () (_ BitVec 64))
+(declare-fun epsabs_ack!20 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!19 () (_ BitVec 64))
+(declare-fun a_ack!22 () (_ BitVec 64))
+(assert (not (bvult #x00000000000003e8 limit_ack!21)))
+(assert (not (fp.leq ((_ to_fp 11 53) epsabs_ack!20)
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FADD_ACCURACY a_ack!22 b_ack!19))
+
+(check-sat)
+(exit)

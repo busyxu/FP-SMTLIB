@@ -1,0 +1,27 @@
+(declare-fun b_ack!2407 () (_ BitVec 32))
+(declare-fun a_ack!2408 () (_ BitVec 32))
+(declare-fun FPCHECK_FSUB_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ BitVec 64))
+             Bool)
+(assert (not (bvslt b_ack!2407 #x00000000)))
+(assert (not (bvslt a_ack!2408 #x00000000)))
+(assert (not (bvslt b_ack!2407 a_ack!2408)))
+(assert (not (bvult b_ack!2407 a_ack!2408)))
+(assert (not (= a_ack!2408 b_ack!2407)))
+(assert (not (= #x00000000 a_ack!2408)))
+(assert (not (bvule b_ack!2407 #x000000aa)))
+(assert (not (bvult (bvmul #x00000002 a_ack!2408) b_ack!2407)))
+(assert (not (bvult (bvsub b_ack!2407 a_ack!2408) #x00000040)))
+(assert (not (bvult b_ack!2407 a_ack!2408)))
+(assert (not (= a_ack!2408 b_ack!2407)))
+(assert (not (= #x00000000 a_ack!2408)))
+(assert (bvult b_ack!2407 (bvmul #x00000002 a_ack!2408)))
+(assert (not (bvule b_ack!2407 #x000000aa)))
+(assert (FPCHECK_FSUB_UNDERFLOW
+  (fp.add roundNearestTiesToEven
+          ((_ to_fp_unsigned 11 53) roundNearestTiesToEven b_ack!2407)
+          ((_ to_fp 11 53) #x3ff0000000000000))
+  #x3ff0000000000000))
+
+(check-sat)
+(exit)

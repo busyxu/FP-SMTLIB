@@ -1,0 +1,21 @@
+(declare-fun a_ack!59 () (_ BitVec 32))
+(declare-fun b_ack!57 () (_ BitVec 32))
+(declare-fun c_ack!58 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_OVERFLOW ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!59 #x00000000)))
+(assert (not (bvslt b_ack!57 #x00000000)))
+(assert (= #x00000000 a_ack!59))
+(assert (not (bvslt b_ack!57 #x00000000)))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!58) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (= #x00000000 (bvand b_ack!57 #x00000001)))
+(assert (bvslt #x00000001 b_ack!57))
+(assert (bvslt #x00000003 b_ack!57))
+(assert (let ((a!1 (not (= #x00000000 (bvand (bvsdiv b_ack!57 #x00000002) #x00000001)))))
+  (FPCHECK_FMUL_OVERFLOW
+    (fp.mul roundNearestTiesToEven
+            ((_ to_fp 11 53) (ite a!1 #xbff0000000000000 #x3ff0000000000000))
+            ((_ to_fp 11 53) #x3fe6a09e667f3bcd))
+    #x3febb67ae8584caa)))
+
+(check-sat)
+(exit)

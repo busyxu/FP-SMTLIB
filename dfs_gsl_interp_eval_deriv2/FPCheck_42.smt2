@@ -1,0 +1,11 @@
+(declare-fun xx_ack!309 () (_ BitVec 64))
+(declare-fun x0_ack!310 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun x1_ack!308 () (_ BitVec 64))
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!309) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.gt ((_ to_fp 11 53) xx_ack!309) ((_ to_fp 11 53) #xabababababababab))))
+(assert (fp.lt ((_ to_fp 11 53) xx_ack!309) ((_ to_fp 11 53) x0_ack!310)))
+(assert (FPCHECK_FSUB_OVERFLOW x1_ack!308 x0_ack!310))
+
+(check-sat)
+(exit)

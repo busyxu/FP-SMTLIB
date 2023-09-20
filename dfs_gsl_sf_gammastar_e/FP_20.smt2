@@ -1,0 +1,14 @@
+(declare-fun a_ack!80 () (_ BitVec 64))
+(assert (not (fp.leq ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x4000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x4024000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x40c0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!80) ((_ to_fp 11 53) #x4330000000000000))))
+(assert (fp.geq ((_ to_fp 11 53) #x3ff0000000000000)
+        (fp.mul roundNearestTiesToEven
+                (fp.abs ((_ to_fp 11 53) a_ack!80))
+                ((_ to_fp 11 53) #x0010000000000000))))
+
+(check-sat)
+(exit)

@@ -1,0 +1,13 @@
+(declare-fun a_ack!89 () (_ BitVec 32))
+(declare-fun b_ack!86 () (_ BitVec 32))
+(declare-fun c_ack!87 () (_ BitVec 64))
+(declare-fun d_ack!88 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!89 #x00000001)))
+(assert (not (bvslt (bvadd #xffffffff a_ack!89) b_ack!86)))
+(assert (not (fp.leq ((_ to_fp 11 53) c_ack!87) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) d_ack!88) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FMUL_ACCURACY #x4000000000000000 c_ack!87))
+
+(check-sat)
+(exit)

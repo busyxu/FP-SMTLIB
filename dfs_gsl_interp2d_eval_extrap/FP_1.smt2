@@ -1,0 +1,26 @@
+(declare-fun x1_ack!27 () (_ BitVec 64))
+(declare-fun x0_ack!31 () (_ BitVec 64))
+(declare-fun y0_ack!28 () (_ BitVec 64))
+(declare-fun x_ack!29 () (_ BitVec 64))
+(declare-fun y_ack!30 () (_ BitVec 64))
+(assert (not (fp.geq ((_ to_fp 11 53) x0_ack!31) ((_ to_fp 11 53) x1_ack!27))))
+(assert (not (fp.geq ((_ to_fp 11 53) y0_ack!28) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!29) ((_ to_fp 11 53) x0_ack!31))))
+(assert (not (fp.geq ((_ to_fp 11 53) x_ack!29) ((_ to_fp 11 53) x1_ack!27))))
+(assert (not (fp.lt ((_ to_fp 11 53) y_ack!30) ((_ to_fp 11 53) y0_ack!28))))
+(assert (not (fp.geq ((_ to_fp 11 53) y_ack!30) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (fp.eq (fp.add roundNearestTiesToEven
+               (fp.sub roundNearestTiesToEven
+                       ((_ to_fp 11 53) x1_ack!27)
+                       ((_ to_fp 11 53) x0_ack!31))
+               ((_ to_fp 11 53) x0_ack!31))
+       ((_ to_fp 11 53) x1_ack!27)))
+(assert (fp.eq (fp.sub roundNearestTiesToEven
+               ((_ to_fp 11 53) x1_ack!27)
+               (fp.sub roundNearestTiesToEven
+                       ((_ to_fp 11 53) x1_ack!27)
+                       ((_ to_fp 11 53) x0_ack!31)))
+       ((_ to_fp 11 53) x0_ack!31)))
+
+(check-sat)
+(exit)

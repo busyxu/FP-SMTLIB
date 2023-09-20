@@ -1,0 +1,30 @@
+(declare-fun b_ack!345 () (_ BitVec 32))
+(declare-fun a_ack!347 () (_ BitVec 32))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun c_ack!346 () (_ BitVec 64))
+(assert (not (bvslt b_ack!345 #x00000000)))
+(assert (not (bvslt a_ack!347 #x00000000)))
+(assert (not (bvslt b_ack!345 a_ack!347)))
+(assert (not (bvult b_ack!345 a_ack!347)))
+(assert (not (= a_ack!347 b_ack!345)))
+(assert (= #x00000000 a_ack!347))
+(assert (bvult a_ack!347 #x00000012))
+(assert (bvult #x0000000000000000
+       (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!347)))))
+(assert (bvult (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!347)))
+       #x0000000000001001))
+(assert (not (bvslt a_ack!347 #x00000000)))
+(assert (= #x00000000 (bvand a_ack!347 #x00000001)))
+(assert (= #x00000000
+   (ite (= ((_ extract 31 31) a_ack!347) #b1)
+        (concat #b1 ((_ extract 31 1) a_ack!347))
+        (concat #b0 ((_ extract 31 1) a_ack!347)))))
+(assert (not (bvslt (bvsub b_ack!345 a_ack!347) #x00000000)))
+(assert (not (= #x00000000 (bvsub b_ack!345 a_ack!347))))
+(assert (= #x00000001 (bvsub b_ack!345 a_ack!347)))
+(assert (FPCHECK_FMUL_ACCURACY #x4000000000000000 c_ack!346))
+
+(check-sat)
+(exit)

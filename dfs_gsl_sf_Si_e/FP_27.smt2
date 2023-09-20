@@ -1,0 +1,10 @@
+(declare-fun a_ack!256 () (_ BitVec 64))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) a_ack!256))
+            ((_ to_fp 11 53) #x3e50000000000000))))
+(assert (not (fp.leq (fp.abs ((_ to_fp 11 53) a_ack!256))
+             ((_ to_fp 11 53) #x4010000000000000))))
+(assert (fp.leq (fp.abs ((_ to_fp 11 53) a_ack!256))
+        ((_ to_fp 11 53) #x401c48c6001f1ea6)))
+
+(check-sat)
+(exit)

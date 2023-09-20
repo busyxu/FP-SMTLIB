@@ -1,0 +1,31 @@
+(declare-fun CF_floor ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun a_ack!133 () (_ BitVec 64))
+(declare-fun b_ack!132 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(assert (let ((a!1 (fp.sub roundNearestTiesToEven
+                   ((_ to_fp 11 53) a_ack!133)
+                   (CF_floor (fp.add roundNearestTiesToEven
+                                     ((_ to_fp 11 53) a_ack!133)
+                                     ((_ to_fp 11 53) #x3fe0000000000000))))))
+  (not (fp.lt (fp.abs a!1) ((_ to_fp 11 53) #x3d19000000000000)))))
+(assert (let ((a!1 (fp.sub roundNearestTiesToEven
+                   ((_ to_fp 11 53) b_ack!132)
+                   (CF_floor (fp.add roundNearestTiesToEven
+                                     ((_ to_fp 11 53) b_ack!132)
+                                     ((_ to_fp 11 53) #x3fe0000000000000))))))
+  (not (fp.lt (fp.abs a!1) ((_ to_fp 11 53) #x3d19000000000000)))))
+(assert (let ((a!1 (CF_floor (fp.add roundNearestTiesToEven
+                             (fp.sub roundNearestTiesToEven
+                                     ((_ to_fp 11 53) b_ack!132)
+                                     ((_ to_fp 11 53) a_ack!133))
+                             ((_ to_fp 11 53) #x3fe0000000000000)))))
+  (FPCHECK_FSUB_UNDERFLOW
+    (fp.sub roundNearestTiesToEven
+            ((_ to_fp 11 53) b_ack!132)
+            ((_ to_fp 11 53) a_ack!133))
+    a!1)))
+
+(check-sat)
+(exit)

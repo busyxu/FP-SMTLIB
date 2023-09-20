@@ -1,0 +1,11 @@
+(declare-fun b_ack!102 () (_ BitVec 32))
+(declare-fun a_ack!103 () (_ BitVec 32))
+(assert (fp.eq ((_ to_fp 11 53) roundNearestTiesToEven (bvsub a_ack!103 b_ack!102))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.eq ((_ to_fp 11 53) roundNearestTiesToEven (bvsub a_ack!103 b_ack!102))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (bvslt b_ack!102 #x00000000)))
+(assert (bvslt a_ack!103 b_ack!102))
+
+(check-sat)
+(exit)

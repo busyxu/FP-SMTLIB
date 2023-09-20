@@ -1,0 +1,12 @@
+(declare-fun b_ack!1533 () (_ BitVec 32))
+(declare-fun a_ack!1535 () (_ BitVec 32))
+(declare-fun c_ack!1534 () (_ BitVec 64))
+(assert (not (bvslt b_ack!1533 #x00000000)))
+(assert (not (bvslt a_ack!1535 b_ack!1533)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!1534) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!1534) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (bvslt #x00000000 b_ack!1533)))
+(assert (= #x00000000 b_ack!1533))
+
+(check-sat)
+(exit)

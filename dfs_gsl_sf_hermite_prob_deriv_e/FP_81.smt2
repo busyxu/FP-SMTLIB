@@ -1,0 +1,38 @@
+(declare-fun b_ack!2067 () (_ BitVec 32))
+(declare-fun a_ack!2069 () (_ BitVec 32))
+(declare-fun c_ack!2068 () (_ BitVec 64))
+(assert (not (bvslt b_ack!2067 #x00000000)))
+(assert (not (bvslt a_ack!2069 #x00000000)))
+(assert (not (bvslt b_ack!2067 a_ack!2069)))
+(assert (not (bvult b_ack!2067 a_ack!2069)))
+(assert (not (= a_ack!2069 b_ack!2067)))
+(assert (= #x00000000 a_ack!2069))
+(assert (bvult a_ack!2069 #x00000012))
+(assert (bvult #x0000000000000000
+       (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!2069)))))
+(assert (bvult (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!2069)))
+       #x0000000000001001))
+(assert (not (bvslt (bvsub b_ack!2067 a_ack!2069) #x00000000)))
+(assert (not (= #x00000000 (bvsub b_ack!2067 a_ack!2069))))
+(assert (not (= #x00000001 (bvsub b_ack!2067 a_ack!2069))))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!2068) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) c_ack!2068))
+            ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (bvslt #x00000001 (bvsub b_ack!2067 a_ack!2069)))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) c_ack!2068))
+            ((_ to_fp 11 53) #x7fefffffffffffff))))
+(assert (bvslt #x00000002 (bvsub b_ack!2067 a_ack!2069)))
+(assert (let ((a!1 (fp.abs (fp.sub roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) c_ack!2068)
+                                   ((_ to_fp 11 53) c_ack!2068))
+                           ((_ to_fp 11 53) #x3ff0000000000000)))))
+  (not (fp.gt a!1 ((_ to_fp 11 53) #x7fefffffffffffff)))))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) c_ack!2068))
+            ((_ to_fp 11 53) #x7fdccccccccccccc))))
+(assert (not (bvslt #x00000003 (bvsub b_ack!2067 a_ack!2069))))
+
+(check-sat)
+(exit)

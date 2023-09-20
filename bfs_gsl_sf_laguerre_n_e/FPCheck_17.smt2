@@ -1,0 +1,10 @@
+(declare-fun a_ack!94 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!93 () (_ BitVec 64))
+(assert (not (bvslt a_ack!94 #x00000000)))
+(assert (not (= #x00000000 a_ack!94)))
+(assert (= #x00000001 a_ack!94))
+(assert (FPCHECK_FADD_ACCURACY #x3ff0000000000000 b_ack!93))
+
+(check-sat)
+(exit)

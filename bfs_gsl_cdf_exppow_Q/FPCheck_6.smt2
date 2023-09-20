@@ -1,0 +1,16 @@
+(declare-fun a_ack!27 () (_ BitVec 64))
+(declare-fun x_ack!29 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!28 () (_ BitVec 64))
+(assert (not (and (fp.eq ((_ to_fp 11 53) x_ack!29)
+                 ((_ to_fp 11 53) #x0000000000000000))
+          (fp.eq ((_ to_fp 11 53) a_ack!27)
+                 ((_ to_fp 11 53) #x0000000000000000)))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) x_ack!29)
+                    ((_ to_fp 11 53) a_ack!27))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FDIV_ACCURACY #x3ff0000000000000 b_ack!28))
+
+(check-sat)
+(exit)

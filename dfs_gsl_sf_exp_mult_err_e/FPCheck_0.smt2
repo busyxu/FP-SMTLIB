@@ -1,0 +1,10 @@
+(declare-fun c_ack!0 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_OVERFLOW ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(declare-fun CF_exp ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(declare-fun a_ack!2 () (_ BitVec 64))
+(declare-fun d_ack!1 () (_ BitVec 64))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!0) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FMUL_OVERFLOW d_ack!1 (CF_exp a_ack!2)))
+
+(check-sat)
+(exit)

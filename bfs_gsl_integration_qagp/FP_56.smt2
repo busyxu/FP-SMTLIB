@@ -1,0 +1,25 @@
+(declare-fun limit_ack!4381 () (_ BitVec 64))
+(declare-fun epsabs_ack!4386 () (_ BitVec 64))
+(declare-fun a_ack!4387 () (_ BitVec 64))
+(declare-fun x1_ack!4382 () (_ BitVec 64))
+(declare-fun x2_ack!4383 () (_ BitVec 64))
+(declare-fun x3_ack!4384 () (_ BitVec 64))
+(declare-fun b_ack!4385 () (_ BitVec 64))
+(assert (not (bvult #x00000000000003e8 limit_ack!4381)))
+(assert (not (fp.leq ((_ to_fp 11 53) epsabs_ack!4386)
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) x1_ack!4382) ((_ to_fp 11 53) a_ack!4387))))
+(assert (not (fp.lt ((_ to_fp 11 53) x2_ack!4383) ((_ to_fp 11 53) x1_ack!4382))))
+(assert (not (fp.lt ((_ to_fp 11 53) x3_ack!4384) ((_ to_fp 11 53) x2_ack!4383))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!4385) ((_ to_fp 11 53) x3_ack!4384))))
+(assert (let ((a!1 (fp.mul roundNearestTiesToEven
+                   ((_ to_fp 11 53) #x3ff0000000000000)
+                   (fp.mul roundNearestTiesToEven
+                           ((_ to_fp 11 53) #x3fe0000000000000)
+                           (fp.add roundNearestTiesToEven
+                                   ((_ to_fp 11 53) a_ack!4387)
+                                   ((_ to_fp 11 53) x1_ack!4382))))))
+  (not (fp.leq a!1 ((_ to_fp 11 53) #x0000000000000000)))))
+
+(check-sat)
+(exit)

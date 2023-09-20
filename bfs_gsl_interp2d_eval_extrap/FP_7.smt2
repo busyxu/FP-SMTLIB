@@ -1,0 +1,12 @@
+(declare-fun x1_ack!173 () (_ BitVec 64))
+(declare-fun x0_ack!177 () (_ BitVec 64))
+(declare-fun y0_ack!174 () (_ BitVec 64))
+(declare-fun x_ack!175 () (_ BitVec 64))
+(declare-fun y_ack!176 () (_ BitVec 64))
+(assert (not (fp.geq ((_ to_fp 11 53) x0_ack!177) ((_ to_fp 11 53) x1_ack!173))))
+(assert (not (fp.geq ((_ to_fp 11 53) y0_ack!174) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) x_ack!175) ((_ to_fp 11 53) x0_ack!177)))
+(assert (fp.lt ((_ to_fp 11 53) y_ack!176) ((_ to_fp 11 53) y0_ack!174)))
+
+(check-sat)
+(exit)

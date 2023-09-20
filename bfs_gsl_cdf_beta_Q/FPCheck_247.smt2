@@ -1,0 +1,32 @@
+(declare-fun x_ack!1235 () (_ BitVec 64))
+(declare-fun nu1_ack!1233 () (_ BitVec 64))
+(declare-fun nu2_ack!1234 () (_ BitVec 64))
+(declare-fun CF_floor ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.geq ((_ to_fp 11 53) x_ack!1235) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.leq ((_ to_fp 11 53) x_ack!1235) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!1235) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!1235) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) nu1_ack!1233) ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) nu2_ack!1234) ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) nu1_ack!1233) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) nu2_ack!1234) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) nu1_ack!1233) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (let ((a!1 ((_ to_fp 11 53)
+             roundNearestTiesToEven
+             (ite (fp.eq ((_ to_fp 11 53) nu1_ack!1233) (CF_floor nu1_ack!1233))
+                  #x00000001
+                  #x00000000))))
+  (not (not (fp.eq a!1 ((_ to_fp 11 53) #x0000000000000000))))))
+(assert (fp.lt ((_ to_fp 11 53) nu2_ack!1234) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (let ((a!1 ((_ to_fp 11 53)
+             roundNearestTiesToEven
+             (ite (fp.eq ((_ to_fp 11 53) nu2_ack!1234) (CF_floor nu2_ack!1234))
+                  #x00000001
+                  #x00000000))))
+  (not (not (fp.eq a!1 ((_ to_fp 11 53) #x0000000000000000))))))
+(assert (not (fp.gt ((_ to_fp 11 53) nu1_ack!1233) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FADD_ACCURACY nu1_ack!1233 nu2_ack!1234))
+
+(check-sat)
+(exit)

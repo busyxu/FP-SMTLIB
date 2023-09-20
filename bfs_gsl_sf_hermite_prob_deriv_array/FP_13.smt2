@@ -1,0 +1,10 @@
+(declare-fun b_ack!61 () (_ BitVec 32))
+(declare-fun a_ack!62 () (_ BitVec 32))
+(assert (not (bvslt b_ack!61 #x00000000)))
+(assert (not (bvslt a_ack!62 #x00000000)))
+(assert (not (= #x00000000 b_ack!61)))
+(assert (= #x00000001 b_ack!61))
+(assert (bvslt #x00000000 a_ack!62))
+
+(check-sat)
+(exit)

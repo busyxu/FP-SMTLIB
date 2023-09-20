@@ -1,0 +1,11 @@
+(declare-fun c_ack!98 () (_ BitVec 64))
+(declare-fun b_ack!97 () (_ BitVec 64))
+(declare-fun a_ack!99 () (_ BitVec 64))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!97))
+            (fp.abs ((_ to_fp 11 53) c_ack!98)))))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) a_ack!99))
+            (fp.abs ((_ to_fp 11 53) c_ack!98)))))
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!97)) (fp.abs ((_ to_fp 11 53) c_ack!98))))
+
+(check-sat)
+(exit)

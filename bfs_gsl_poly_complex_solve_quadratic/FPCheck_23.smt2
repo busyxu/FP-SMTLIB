@@ -1,0 +1,33 @@
+(declare-fun a_ack!100 () (_ BitVec 64))
+(declare-fun c_ack!99 () (_ BitVec 64))
+(declare-fun b_ack!98 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_OVERFLOW ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!100) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (let ((a!1 (fp.sub roundNearestTiesToEven
+                   (fp.mul roundNearestTiesToEven
+                           ((_ to_fp 11 53) b_ack!98)
+                           ((_ to_fp 11 53) b_ack!98))
+                   (fp.mul roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) #x4010000000000000)
+                                   ((_ to_fp 11 53) a_ack!100))
+                           ((_ to_fp 11 53) c_ack!99)))))
+  (not (fp.gt a!1 ((_ to_fp 11 53) #x0000000000000000)))))
+(assert (let ((a!1 (fp.sub roundNearestTiesToEven
+                   (fp.mul roundNearestTiesToEven
+                           ((_ to_fp 11 53) b_ack!98)
+                           ((_ to_fp 11 53) b_ack!98))
+                   (fp.mul roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) #x4010000000000000)
+                                   ((_ to_fp 11 53) a_ack!100))
+                           ((_ to_fp 11 53) c_ack!99)))))
+  (fp.eq a!1 ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FDIV_OVERFLOW
+  (fp.mul roundNearestTiesToEven
+          ((_ to_fp 11 53) #xbfe0000000000000)
+          ((_ to_fp 11 53) b_ack!98))
+  a_ack!100))
+
+(check-sat)
+(exit)

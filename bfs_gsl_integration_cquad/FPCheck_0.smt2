@@ -1,0 +1,13 @@
+(declare-fun epsabs_ack!6 () (_ BitVec 64))
+(declare-fun epsrel_ack!7 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!5 () (_ BitVec 64))
+(declare-fun a_ack!8 () (_ BitVec 64))
+(assert (not (fp.lt ((_ to_fp 11 53) epsabs_ack!6) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!7) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.leq ((_ to_fp 11 53) epsabs_ack!6)
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FADD_OVERFLOW a_ack!8 b_ack!5))
+
+(check-sat)
+(exit)

@@ -1,0 +1,50 @@
+(declare-fun c_ack!710 () (_ BitVec 64))
+(declare-fun a_ack!711 () (_ BitVec 64))
+(declare-fun CF_log ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FMUL_ACCURACY
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_exp ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun CF_floor ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!710) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) a_ack!711) ((_ to_fp 11 53) #x40762e42fefa39ef)))
+(assert (not (fp.gt ((_ to_fp 11 53) a_ack!711) ((_ to_fp 11 53) #xc076232bdd7abcd2))))
+(assert (let ((a!1 (fp.add roundNearestTiesToEven
+                   ((_ to_fp 11 53) a_ack!711)
+                   (CF_log (fp.abs ((_ to_fp 11 53) c_ack!710))))))
+  (not (fp.gt (fp.div roundNearestTiesToEven
+                      a!1
+                      ((_ to_fp 11 53) #x40026bb1bbb55516))
+              ((_ to_fp 11 53) #x41dfffffff800000)))))
+(assert (let ((a!1 (fp.add roundNearestTiesToEven
+                   ((_ to_fp 11 53) a_ack!711)
+                   (CF_log (fp.abs ((_ to_fp 11 53) c_ack!710))))))
+  (not (fp.lt (fp.div roundNearestTiesToEven
+                      a!1
+                      ((_ to_fp 11 53) #x40026bb1bbb55516))
+              ((_ to_fp 11 53) #xc1dfffffffc00000)))))
+(assert (let ((a!1 ((_ to_fp 11 53)
+             roundNearestTiesToEven
+             (ite (fp.geq ((_ to_fp 11 53) c_ack!710)
+                          ((_ to_fp 11 53) #x0000000000000000))
+                  #x00000001
+                  #xffffffff)))
+      (a!2 (fp.add roundNearestTiesToEven
+                   ((_ to_fp 11 53) a_ack!711)
+                   (CF_log (fp.abs ((_ to_fp 11 53) c_ack!710))))))
+(let ((a!3 ((_ fp.to_sbv 32)
+             roundTowardZero
+             (CF_floor (fp.div roundNearestTiesToEven
+                               a!2
+                               ((_ to_fp 11 53) #x40026bb1bbb55516))))))
+(let ((a!4 (fp.mul roundNearestTiesToEven
+                   (fp.sub roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   a!2
+                                   ((_ to_fp 11 53) #x40026bb1bbb55516))
+                           ((_ to_fp 11 53) roundNearestTiesToEven a!3))
+                   ((_ to_fp 11 53) #x40026bb1bbb55516))))
+  (FPCHECK_FMUL_ACCURACY a!1 (CF_exp a!4))))))
+
+(check-sat)
+(exit)

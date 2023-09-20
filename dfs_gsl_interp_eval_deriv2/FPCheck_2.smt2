@@ -1,0 +1,12 @@
+(declare-fun xx_ack!14 () (_ BitVec 64))
+(declare-fun x0_ack!15 () (_ BitVec 64))
+(declare-fun x1_ack!13 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!14) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.gt ((_ to_fp 11 53) xx_ack!14) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!14) ((_ to_fp 11 53) x0_ack!15))))
+(assert (not (fp.geq ((_ to_fp 11 53) xx_ack!14) ((_ to_fp 11 53) x1_ack!13))))
+(assert (FPCHECK_FSUB_ACCURACY x1_ack!13 x0_ack!15))
+
+(check-sat)
+(exit)

@@ -1,0 +1,22 @@
+(declare-fun y1_ack!332 () (_ BitVec 64))
+(declare-fun x1_ack!335 () (_ BitVec 64))
+(declare-fun y2_ack!334 () (_ BitVec 64))
+(declare-fun x2_ack!333 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_ACCURACY
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_atan2 ((_ BitVec 64) (_ BitVec 64)) (_ FloatingPoint 11 53))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x1_ack!335))
+             (fp.abs ((_ to_fp 11 53) y1_ack!332)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x1_ack!335) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x2_ack!333))
+             (fp.abs ((_ to_fp 11 53) y2_ack!334)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x2_ack!333) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FMUL_ACCURACY
+  (CF_atan2 y1_ack!332 x1_ack!335)
+  (fp.mul roundNearestTiesToEven
+          ((_ to_fp 11 53) #x7ff0000000000001)
+          (CF_atan2 y2_ack!334 x2_ack!333))))
+
+(check-sat)
+(exit)

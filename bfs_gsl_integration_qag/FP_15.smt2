@@ -1,0 +1,12 @@
+(declare-fun key_ack!201 () (_ BitVec 32))
+(assert (not (bvslt key_ack!201 #x00000001)))
+(assert (not (bvslt #x00000006 key_ack!201)))
+(assert (not (= #x00000001 key_ack!201)))
+(assert (not (= #x00000002 key_ack!201)))
+(assert (not (= #x00000003 key_ack!201)))
+(assert (not (= #x00000004 key_ack!201)))
+(assert (not (= #x00000005 key_ack!201)))
+(assert (not (= #x00000006 key_ack!201)))
+
+(check-sat)
+(exit)

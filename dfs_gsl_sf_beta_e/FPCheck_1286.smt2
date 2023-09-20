@@ -1,0 +1,40 @@
+(declare-fun a_ack!4319 () (_ BitVec 64))
+(declare-fun b_ack!4318 () (_ BitVec 64))
+(declare-fun CF_floor ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (fp.gt ((_ to_fp 11 53) a_ack!4319) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.gt ((_ to_fp 11 53) b_ack!4318) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.lt ((_ to_fp 11 53) a_ack!4319) ((_ to_fp 11 53) #x4049000000000000)))
+(assert (fp.lt ((_ to_fp 11 53) b_ack!4318) ((_ to_fp 11 53) #x4049000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!4319) ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!4319) ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (fp.leq ((_ to_fp 11 53) a_ack!4319) ((_ to_fp 11 53) #x4065600000000000)))
+(assert (fp.eq ((_ to_fp 11 53) a_ack!4319) (CF_floor a_ack!4319)))
+(assert (let ((a!1 ((_ sign_extend 32)
+             (bvadd #xffffffff
+                    ((_ fp.to_sbv 32) roundTowardZero (CF_floor a_ack!4319))))))
+  (bvult #x0000000000000000
+         (bvadd #x0000000000000008 (bvmul #x0000000000000018 a!1)))))
+(assert (let ((a!1 ((_ sign_extend 32)
+             (bvadd #xffffffff
+                    ((_ fp.to_sbv 32) roundTowardZero (CF_floor a_ack!4319))))))
+  (bvult (bvadd #x0000000000000008 (bvmul #x0000000000000018 a!1))
+         #x0000000000001001)))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!4318) ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!4318) ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (fp.leq ((_ to_fp 11 53) b_ack!4318) ((_ to_fp 11 53) #x4065600000000000)))
+(assert (fp.eq ((_ to_fp 11 53) b_ack!4318) (CF_floor b_ack!4318)))
+(assert (let ((a!1 ((_ sign_extend 32)
+             (bvadd #xffffffff
+                    ((_ fp.to_sbv 32) roundTowardZero (CF_floor b_ack!4318))))))
+  (bvult #x0000000000000000
+         (bvadd #x0000000000000008 (bvmul #x0000000000000018 a!1)))))
+(assert (let ((a!1 ((_ sign_extend 32)
+             (bvadd #xffffffff
+                    ((_ fp.to_sbv 32) roundTowardZero (CF_floor b_ack!4318))))))
+  (bvult (bvadd #x0000000000000008 (bvmul #x0000000000000018 a!1))
+         #x0000000000001001)))
+(assert (FPCHECK_FADD_ACCURACY a_ack!4319 b_ack!4318))
+
+(check-sat)
+(exit)

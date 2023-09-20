@@ -1,0 +1,12 @@
+(declare-fun key_ack!164 () (_ BitVec 32))
+(declare-fun limit_ack!163 () (_ BitVec 64))
+(declare-fun epsabs_ack!161 () (_ BitVec 64))
+(declare-fun epsrel_ack!162 () (_ BitVec 64))
+(assert (bvslt key_ack!164 #x00000001))
+(assert (not (bvult #x00000000000003e8 limit_ack!163)))
+(assert (fp.leq ((_ to_fp 11 53) epsabs_ack!161) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!162)
+            ((_ to_fp 11 53) #x3d09000000000000))))
+
+(check-sat)
+(exit)

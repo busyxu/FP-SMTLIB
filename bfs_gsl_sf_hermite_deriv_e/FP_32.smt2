@@ -1,0 +1,37 @@
+(declare-fun b_ack!774 () (_ BitVec 32))
+(declare-fun a_ack!775 () (_ BitVec 32))
+(assert (not (bvslt b_ack!774 #x00000000)))
+(assert (not (bvslt a_ack!775 #x00000000)))
+(assert (not (bvslt b_ack!774 a_ack!775)))
+(assert (not (bvult b_ack!774 a_ack!775)))
+(assert (= a_ack!775 b_ack!774))
+(assert (not (bvult a_ack!775 #x00000012)))
+(assert (bvule a_ack!775 #x000000aa))
+(assert (bvult #x0000000000000000
+       (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!775)))))
+(assert (bvult (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!775)))
+       #x0000000000001001))
+(assert (not (bvslt a_ack!775 #x00000000)))
+(assert (= #x00000000 (bvand a_ack!775 #x00000001)))
+(assert (let ((a!1 (= #x00000000
+              (ite (= ((_ extract 31 31) a_ack!775) #b1)
+                   (concat #b1 ((_ extract 31 1) a_ack!775))
+                   (concat #b0 ((_ extract 31 1) a_ack!775))))))
+  (not a!1)))
+(assert (let ((a!1 (bvand (ite (= ((_ extract 31 31) a_ack!775) #b1)
+                       (concat #b1 ((_ extract 31 1) a_ack!775))
+                       (concat #b0 ((_ extract 31 1) a_ack!775)))
+                  #x00000001)))
+  (= #x00000000 a!1)))
+(assert (let ((a!1 (ite (= ((_ extract 31 31) a_ack!775) #b1)
+                (concat #b1 ((_ extract 31 1) a_ack!775))
+                (concat #b0 ((_ extract 31 1) a_ack!775)))))
+  (= #x00000000
+     (ite (= ((_ extract 31 31) a!1) #b1)
+          (concat #b1 ((_ extract 31 1) a!1))
+          (concat #b0 ((_ extract 31 1) a!1))))))
+
+(check-sat)
+(exit)

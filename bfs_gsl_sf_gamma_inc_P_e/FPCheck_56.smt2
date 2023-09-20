@@ -1,0 +1,16 @@
+(declare-fun a_ack!178 () (_ BitVec 64))
+(declare-fun b_ack!177 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.leq ((_ to_fp 11 53) a_ack!178) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!177) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!177) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) b_ack!177) ((_ to_fp 11 53) #x4034000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!178) ((_ to_fp 11 53) #x4024000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!177)
+            (fp.mul roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3fe0000000000000)
+                    ((_ to_fp 11 53) a_ack!178)))))
+(assert (FPCHECK_FSUB_UNDERFLOW b_ack!177 a_ack!178))
+
+(check-sat)
+(exit)

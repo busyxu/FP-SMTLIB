@@ -1,0 +1,42 @@
+(declare-fun n_ack!634 () (_ BitVec 32))
+(declare-fun a_ack!635 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ BitVec 64))
+             Bool)
+(assert (= #x00000000 (bvsrem n_ack!634 #x00000002)))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!635) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt n_ack!634 #x00000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!635) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt n_ack!634 #x00000000)))
+(assert (not (= #x00000000 n_ack!634)))
+(assert (not (= #x00000001 n_ack!634)))
+(assert (not (= #x00000002 n_ack!634)))
+(assert (not (= #x00000003 n_ack!634)))
+(assert (bvslt n_ack!634 #x00000046))
+(assert (let ((a!1 (fp.mul roundNearestTiesToEven
+                   ((_ to_fp 11 53) #x3fd0000000000000)
+                   ((_ to_fp 11 53)
+                     roundNearestTiesToEven
+                     (bvadd #x00000001 (bvmul #x00000002 n_ack!634)))))
+      (a!2 (fp.mul roundNearestTiesToEven
+                   ((_ to_fp 11 53)
+                     roundNearestTiesToEven
+                     (bvadd #x00000001 (bvmul #x00000002 n_ack!634)))
+                   ((_ to_fp 11 53)
+                     roundNearestTiesToEven
+                     (bvadd #x00000001 (bvmul #x00000002 n_ack!634))))))
+(let ((a!3 (fp.add roundNearestTiesToEven
+                   (fp.add roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) #x4040800000000000)
+                                   (fp.mul roundNearestTiesToEven a!2 a!2))
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) #x4079a00000000000)
+                                   a!2))
+                   ((_ to_fp 11 53) #x4079500000000000))))
+  (FPCHECK_FDIV_UNDERFLOW
+    (fp.mul roundNearestTiesToEven a!1 a!3)
+    #x7ff0000000000001))))
+
+(check-sat)
+(exit)

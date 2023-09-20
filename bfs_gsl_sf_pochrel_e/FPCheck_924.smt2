@@ -1,0 +1,21 @@
+(declare-fun a_ack!2553 () (_ BitVec 64))
+(declare-fun b_ack!2552 () (_ BitVec 64))
+(declare-fun CF_floor ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FSUB_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!2552))
+       (fp.mul roundNearestTiesToEven
+               ((_ to_fp 11 53) #x3fb999999999999a)
+               (fp.abs ((_ to_fp 11 53) a_ack!2553)))))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!2552) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) a_ack!2553) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.leq ((_ to_fp 11 53) a_ack!2553) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.eq ((_ to_fp 11 53) a_ack!2553) (CF_floor a_ack!2553)))
+(assert (fp.lt (fp.add roundNearestTiesToEven
+               ((_ to_fp 11 53) a_ack!2553)
+               ((_ to_fp 11 53) b_ack!2552))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.eq ((_ to_fp 11 53) b_ack!2552) (CF_floor b_ack!2552)))
+(assert (FPCHECK_FSUB_OVERFLOW #x8000000000000000 b_ack!2552))
+
+(check-sat)
+(exit)

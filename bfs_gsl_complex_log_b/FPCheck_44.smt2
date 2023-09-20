@@ -1,0 +1,21 @@
+(declare-fun y1_ack!260 () (_ BitVec 64))
+(declare-fun x1_ack!263 () (_ BitVec 64))
+(declare-fun y2_ack!262 () (_ BitVec 64))
+(declare-fun x2_ack!261 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_log ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x1_ack!263))
+             (fp.abs ((_ to_fp 11 53) y1_ack!260)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x1_ack!263) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x2_ack!261))
+             (fp.abs ((_ to_fp 11 53) y2_ack!262)))))
+(assert (not (fp.eq ((_ to_fp 11 53) x2_ack!261) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (let ((a!1 (fp.add roundNearestTiesToEven
+                   (CF_log (fp.abs ((_ to_fp 11 53) y2_ack!262)))
+                   ((_ to_fp 11 53) #x7ff0000000000001))))
+  (FPCHECK_FMUL_UNDERFLOW #x7ff0000000000001 a!1)))
+
+(check-sat)
+(exit)

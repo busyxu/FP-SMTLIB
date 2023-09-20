@@ -1,0 +1,10 @@
+(declare-fun c_ack!596 () (_ BitVec 64))
+(declare-fun b_ack!595 () (_ BitVec 64))
+(declare-fun a_ack!597 () (_ BitVec 64))
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!595))
+       (fp.abs ((_ to_fp 11 53) c_ack!596))))
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) a_ack!597))
+       (fp.abs ((_ to_fp 11 53) b_ack!595))))
+
+(check-sat)
+(exit)

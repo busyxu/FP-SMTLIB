@@ -1,0 +1,16 @@
+(declare-fun xx_ack!361 () (_ BitVec 64))
+(declare-fun x0_ack!362 () (_ BitVec 64))
+(declare-fun x1_ack!360 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!361) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.gt ((_ to_fp 11 53) xx_ack!361) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!361) ((_ to_fp 11 53) x0_ack!362))))
+(assert (not (fp.geq ((_ to_fp 11 53) xx_ack!361) ((_ to_fp 11 53) x1_ack!360))))
+(assert (fp.gt (fp.sub roundNearestTiesToEven
+               ((_ to_fp 11 53) x1_ack!360)
+               ((_ to_fp 11 53) x0_ack!362))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FSUB_ACCURACY xx_ack!361 x0_ack!362))
+
+(check-sat)
+(exit)

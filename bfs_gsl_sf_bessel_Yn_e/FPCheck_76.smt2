@@ -1,0 +1,27 @@
+(declare-fun a_ack!241 () (_ BitVec 32))
+(declare-fun b_ack!240 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_log ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(assert (bvslt a_ack!241 #x00000000))
+(assert (not (= #x00000000 (bvand (bvsub #x00000000 a_ack!241) #x00000001))))
+(assert (not (= #x00000000 a_ack!241)))
+(assert (= #xffffffff a_ack!241))
+(assert (not (fp.leq ((_ to_fp 11 53) b_ack!240) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!240) ((_ to_fp 11 53) #x001922d0e5604189))))
+(assert (fp.lt ((_ to_fp 11 53) b_ack!240) ((_ to_fp 11 53) #x3e60000000000000)))
+(assert (not (fp.eq (fp.abs ((_ to_fp 11 53) b_ack!240))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) b_ack!240))
+            ((_ to_fp 11 53) #x0020000000000000))))
+(assert (fp.lt (fp.abs ((_ to_fp 11 53) b_ack!240))
+       ((_ to_fp 11 53) #x3e66a09e667f3bcd)))
+(assert (FPCHECK_FMUL_UNDERFLOW
+  #x3fe45f306dc9c883
+  (CF_log (fp.mul roundNearestTiesToEven
+                  ((_ to_fp 11 53) #x3fe0000000000000)
+                  ((_ to_fp 11 53) b_ack!240)))))
+
+(check-sat)
+(exit)

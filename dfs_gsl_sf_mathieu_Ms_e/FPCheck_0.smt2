@@ -1,0 +1,12 @@
+(declare-fun q_ack!9 () (_ BitVec 64))
+(declare-fun j_ack!10 () (_ BitVec 32))
+(declare-fun n_ack!8 () (_ BitVec 32))
+(declare-fun FPCHECK_FINVALID_SQRT ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.leq ((_ to_fp 11 53) q_ack!9) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt j_ack!10 #x00000001)))
+(assert (not (bvslt #x00000002 j_ack!10)))
+(assert (not (= #x00000000 n_ack!8)))
+(assert (FPCHECK_FINVALID_SQRT q_ack!9 q_ack!9))
+
+(check-sat)
+(exit)

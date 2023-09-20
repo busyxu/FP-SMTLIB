@@ -1,0 +1,7 @@
+(declare-fun b_ack!210 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (fp.gt ((_ to_fp 11 53) b_ack!210) ((_ to_fp 11 53) #x404e000000000000)))
+(assert (FPCHECK_FADD_ACCURACY #xbfe62e42fefa39ef b_ack!210))
+
+(check-sat)
+(exit)

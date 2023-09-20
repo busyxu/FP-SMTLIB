@@ -1,0 +1,12 @@
+(declare-fun a_ack!2000 () (_ BitVec 32))
+(declare-fun b_ack!1998 () (_ BitVec 32))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun c_ack!1999 () (_ BitVec 64))
+(assert (not (bvslt a_ack!2000 #x00000000)))
+(assert (not (bvslt b_ack!1998 #x00000000)))
+(assert (not (= #x00000000 a_ack!2000)))
+(assert (= #x00000001 a_ack!2000))
+(assert (FPCHECK_FMUL_ACCURACY #x3ff6a09e667f3bcd c_ack!1999))
+
+(check-sat)
+(exit)

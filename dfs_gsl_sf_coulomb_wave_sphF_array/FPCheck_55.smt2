@@ -1,0 +1,11 @@
+(declare-fun d_ack!431 () (_ BitVec 64))
+(declare-fun a_ack!432 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) d_ack!431) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!432) ((_ to_fp 11 53) #xbfe0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) d_ack!431) ((_ to_fp 11 53) #x0024000000000001))))
+(assert (not (fp.eq ((_ to_fp 11 53) d_ack!431) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FDIV_OVERFLOW #x3ff0000000000000 d_ack!431))
+
+(check-sat)
+(exit)

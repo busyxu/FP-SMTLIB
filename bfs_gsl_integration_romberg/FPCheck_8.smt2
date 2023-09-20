@@ -1,0 +1,12 @@
+(declare-fun epsabs_ack!57 () (_ BitVec 64))
+(declare-fun epsrel_ack!58 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun a_ack!59 () (_ BitVec 64))
+(assert (not (fp.lt ((_ to_fp 11 53) epsabs_ack!57)
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!58)
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FMUL_ACCURACY #x3ff0000000000000 a_ack!59))
+
+(check-sat)
+(exit)

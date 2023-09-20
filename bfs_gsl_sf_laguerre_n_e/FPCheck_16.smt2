@@ -1,0 +1,10 @@
+(declare-fun a_ack!90 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!89 () (_ BitVec 64))
+(assert (not (bvslt a_ack!90 #x00000000)))
+(assert (not (= #x00000000 a_ack!90)))
+(assert (= #x00000001 a_ack!90))
+(assert (FPCHECK_FADD_UNDERFLOW #x3ff0000000000000 b_ack!89))
+
+(check-sat)
+(exit)

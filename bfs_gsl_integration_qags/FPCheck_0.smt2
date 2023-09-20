@@ -1,0 +1,12 @@
+(declare-fun limit_ack!5 () (_ BitVec 64))
+(declare-fun epsabs_ack!4 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!3 () (_ BitVec 64))
+(declare-fun a_ack!6 () (_ BitVec 64))
+(assert (not (bvult #x00000000000003e8 limit_ack!5)))
+(assert (not (fp.leq ((_ to_fp 11 53) epsabs_ack!4)
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FADD_OVERFLOW a_ack!6 b_ack!3))
+
+(check-sat)
+(exit)

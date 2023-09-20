@@ -1,0 +1,21 @@
+(declare-fun b_ack!848 () (_ BitVec 32))
+(declare-fun a_ack!849 () (_ BitVec 32))
+(assert (not (bvslt b_ack!848 #x00000000)))
+(assert (not (bvslt a_ack!849 #x00000000)))
+(assert (not (bvslt b_ack!848 a_ack!849)))
+(assert (not (bvult b_ack!848 a_ack!849)))
+(assert (not (= a_ack!849 b_ack!848)))
+(assert (not (= #x00000000 a_ack!849)))
+(assert (not (bvule b_ack!848 #x000000aa)))
+(assert (bvult (bvmul #x00000002 a_ack!849) b_ack!848))
+(assert (bvult (bvsub b_ack!848 (bvsub b_ack!848 a_ack!849)) #x00000040))
+(assert (bvule (bvadd #x00000001 (bvsub b_ack!848 a_ack!849)) b_ack!848))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   ((_ to_fp_unsigned 11 53) roundNearestTiesToEven b_ack!848)
+                   ((_ to_fp_unsigned 11 53)
+                     roundNearestTiesToEven
+                     (bvsub b_ack!848 (bvsub b_ack!848 a_ack!849))))))
+  (fp.gt a!1 ((_ to_fp 11 53) #x7fefffffffffffff))))
+
+(check-sat)
+(exit)

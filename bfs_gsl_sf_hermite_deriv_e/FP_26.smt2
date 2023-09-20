@@ -1,0 +1,31 @@
+(declare-fun b_ack!526 () (_ BitVec 32))
+(declare-fun a_ack!528 () (_ BitVec 32))
+(declare-fun c_ack!527 () (_ BitVec 64))
+(assert (not (bvslt b_ack!526 #x00000000)))
+(assert (not (bvslt a_ack!528 #x00000000)))
+(assert (not (bvslt b_ack!526 a_ack!528)))
+(assert (not (bvult b_ack!526 a_ack!528)))
+(assert (not (= a_ack!528 b_ack!526)))
+(assert (= #x00000000 a_ack!528))
+(assert (bvult a_ack!528 #x00000012))
+(assert (bvult #x0000000000000000
+       (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!528)))))
+(assert (bvult (bvadd #x0000000000000008
+              (bvmul #x0000000000000018 (concat #x00000000 a_ack!528)))
+       #x0000000000001001))
+(assert (not (bvslt a_ack!528 #x00000000)))
+(assert (= #x00000000 (bvand a_ack!528 #x00000001)))
+(assert (= #x00000000
+   (ite (= ((_ extract 31 31) a_ack!528) #b1)
+        (concat #b1 ((_ extract 31 1) a_ack!528))
+        (concat #b0 ((_ extract 31 1) a_ack!528)))))
+(assert (not (bvslt (bvsub b_ack!526 a_ack!528) #x00000000)))
+(assert (not (= #x00000000 (bvsub b_ack!526 a_ack!528))))
+(assert (not (= #x00000001 (bvsub b_ack!526 a_ack!528))))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!527) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (= #x00000000 (bvand (bvsub b_ack!526 a_ack!528) #x00000001)))
+(assert (not (bvslt #x00000129 (bvadd #xffffffff (bvsub b_ack!526 a_ack!528)))))
+
+(check-sat)
+(exit)

@@ -1,0 +1,18 @@
+(declare-fun xx_ack!71 () (_ BitVec 64))
+(declare-fun x0_ack!72 () (_ BitVec 64))
+(declare-fun x1_ack!69 () (_ BitVec 64))
+(declare-fun x2_ack!70 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!71) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.gt ((_ to_fp 11 53) xx_ack!71) ((_ to_fp 11 53) #xabababababababab))))
+(assert (not (fp.lt ((_ to_fp 11 53) xx_ack!71) ((_ to_fp 11 53) x0_ack!72))))
+(assert (fp.geq ((_ to_fp 11 53) xx_ack!71) ((_ to_fp 11 53) x1_ack!69)))
+(assert (not (fp.gt ((_ to_fp 11 53) x1_ack!69) ((_ to_fp 11 53) xx_ack!71))))
+(assert (fp.gt (fp.sub roundNearestTiesToEven
+               ((_ to_fp 11 53) x2_ack!70)
+               ((_ to_fp 11 53) x1_ack!69))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FSUB_OVERFLOW xx_ack!71 x1_ack!69))
+
+(check-sat)
+(exit)

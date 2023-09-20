@@ -1,0 +1,10 @@
+(declare-fun a_ack!28 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) a_ack!28))
+            ((_ to_fp 11 53) #x3e50000000000000))))
+(assert (fp.leq (fp.abs ((_ to_fp 11 53) a_ack!28))
+        ((_ to_fp 11 53) #x4010000000000000)))
+(assert (FPCHECK_FMUL_ACCURACY a_ack!28 a_ack!28))
+
+(check-sat)
+(exit)

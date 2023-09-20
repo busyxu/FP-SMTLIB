@@ -1,0 +1,10 @@
+(declare-fun b_ack!4 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!4))
+            ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) b_ack!4))
+            ((_ to_fp 11 53) #x3cc0000000000000))))
+(assert (FPCHECK_FSUB_ACCURACY b_ack!4 #x3ff0000000000000))
+
+(check-sat)
+(exit)

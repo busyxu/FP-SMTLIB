@@ -1,0 +1,16 @@
+(declare-fun a_ack!25 () (_ BitVec 64))
+(declare-fun c_ack!24 () (_ BitVec 32))
+(declare-fun b_ack!23 () (_ BitVec 32))
+(declare-fun FPCHECK_FSUB_ACCURACY ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(declare-fun CF_pow ((_ BitVec 64) (_ BitVec 64)) (_ FloatingPoint 11 53))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!25) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (= #x00000000 c_ack!24)))
+(assert (bvult (bvmul #x0000000000000008
+              (concat #x00000000 (bvand b_ack!23 #x00000007)))
+       #x0000000000000011))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!25) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.geq ((_ to_fp 11 53) a_ack!25) ((_ to_fp 11 53) #x4024000000000000)))
+(assert (FPCHECK_FSUB_ACCURACY a_ack!25 (CF_pow a_ack!25 #x3fd5555555555555)))
+
+(check-sat)
+(exit)

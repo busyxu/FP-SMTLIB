@@ -1,0 +1,12 @@
+(declare-fun a_ack!1988 () (_ BitVec 32))
+(declare-fun b_ack!1986 () (_ BitVec 32))
+(declare-fun FPCHECK_FMUL_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun c_ack!1987 () (_ BitVec 64))
+(assert (not (bvslt a_ack!1988 #x00000000)))
+(assert (not (bvslt b_ack!1986 #x00000000)))
+(assert (not (= #x00000000 a_ack!1988)))
+(assert (= #x00000001 a_ack!1988))
+(assert (FPCHECK_FMUL_OVERFLOW #x3ff6a09e667f3bcd c_ack!1987))
+
+(check-sat)
+(exit)

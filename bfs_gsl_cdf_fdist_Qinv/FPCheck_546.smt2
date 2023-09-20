@@ -1,0 +1,177 @@
+(declare-fun x_ack!2775 () (_ BitVec 64))
+(declare-fun nu1_ack!2773 () (_ BitVec 64))
+(declare-fun nu2_ack!2774 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_OVERFLOW ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) nu1_ack!2773) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) nu2_ack!2774) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (fp.gt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x3fe0000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (fp.gt ((_ to_fp 11 53) x_ack!2775) ((_ to_fp 11 53) #x3fe0000000000000)))
+(assert (not (fp.lt (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.gt (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (not (fp.lt (fp.sub roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3ff0000000000000)
+                    ((_ to_fp 11 53) x_ack!2775))
+            ((_ to_fp 11 53) #x3fb999999999999a))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.div roundNearestTiesToEven
+                           ((_ to_fp 11 53) nu1_ack!2773)
+                           ((_ to_fp 11 53) #x4000000000000000))
+                   (fp.add roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu1_ack!2773)
+                                   ((_ to_fp 11 53) #x4000000000000000))
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu2_ack!2774)
+                                   ((_ to_fp 11 53) #x4000000000000000))))))
+  (not (fp.leq a!1 ((_ to_fp 11 53) #x0000000000000000)))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.div roundNearestTiesToEven
+                           ((_ to_fp 11 53) nu1_ack!2773)
+                           ((_ to_fp 11 53) #x4000000000000000))
+                   (fp.add roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu1_ack!2773)
+                                   ((_ to_fp 11 53) #x4000000000000000))
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu2_ack!2774)
+                                   ((_ to_fp 11 53) #x4000000000000000))))))
+  (not (fp.geq a!1 ((_ to_fp 11 53) #x3ff0000000000000)))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.div roundNearestTiesToEven
+                           ((_ to_fp 11 53) nu1_ack!2773)
+                           ((_ to_fp 11 53) #x4000000000000000))
+                   (fp.add roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu1_ack!2773)
+                                   ((_ to_fp 11 53) #x4000000000000000))
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu2_ack!2774)
+                                   ((_ to_fp 11 53) #x4000000000000000))))))
+  (not (fp.eq a!1 ((_ to_fp 11 53) #x0000000000000000)))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.div roundNearestTiesToEven
+                           ((_ to_fp 11 53) nu1_ack!2773)
+                           ((_ to_fp 11 53) #x4000000000000000))
+                   (fp.add roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu1_ack!2773)
+                                   ((_ to_fp 11 53) #x4000000000000000))
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu2_ack!2774)
+                                   ((_ to_fp 11 53) #x4000000000000000))))))
+  (not (fp.eq a!1 ((_ to_fp 11 53) #x3ff0000000000000)))))
+(assert (not (fp.gt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.gt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.eq (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.gt (fp.div roundNearestTiesToEven
+               ((_ to_fp 11 53) nu1_ack!2773)
+               ((_ to_fp 11 53) #x4000000000000000))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.gt (fp.div roundNearestTiesToEven
+               ((_ to_fp 11 53) nu2_ack!2774)
+               ((_ to_fp 11 53) #x4000000000000000))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.gt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2774)
+                    ((_ to_fp 11 53) #x4000000000000000)))))
+(assert (fp.lt (fp.div roundNearestTiesToEven
+               ((_ to_fp 11 53) nu1_ack!2773)
+               ((_ to_fp 11 53) #x4000000000000000))
+       (fp.div roundNearestTiesToEven
+               ((_ to_fp 11 53) nu2_ack!2774)
+               ((_ to_fp 11 53) #x4000000000000000))))
+(assert (fp.lt (fp.div roundNearestTiesToEven
+               (fp.div roundNearestTiesToEven
+                       ((_ to_fp 11 53) nu1_ack!2773)
+                       ((_ to_fp 11 53) #x4000000000000000))
+               (fp.div roundNearestTiesToEven
+                       ((_ to_fp 11 53) nu2_ack!2774)
+                       ((_ to_fp 11 53) #x4000000000000000)))
+       ((_ to_fp 11 53) #x3fc999999999999a)))
+(assert (not (fp.leq (fp.div roundNearestTiesToEven
+                     ((_ to_fp 11 53) nu1_ack!2773)
+                     ((_ to_fp 11 53) #x4000000000000000))
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu1_ack!2773)
+                    ((_ to_fp 11 53) #x4000000000000000))
+            ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (fp.lt (fp.div roundNearestTiesToEven
+               ((_ to_fp 11 53) nu1_ack!2773)
+               ((_ to_fp 11 53) #x4000000000000000))
+       ((_ to_fp 11 53) #x4000000000000000)))
+(assert (let ((a!1 (fp.mul roundNearestTiesToEven
+                   ((_ to_fp 11 53) #x3ff5555555555555)
+                   (fp.sub roundNearestTiesToEven
+                           (fp.div roundNearestTiesToEven
+                                   ((_ to_fp 11 53) nu1_ack!2773)
+                                   ((_ to_fp 11 53) #x4000000000000000))
+                           ((_ to_fp 11 53) #x3fe0000000000000)))))
+  (FPCHECK_FSUB_OVERFLOW a!1 #x3ff0000000000000)))
+
+(check-sat)
+(exit)

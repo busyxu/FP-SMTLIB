@@ -1,0 +1,18 @@
+(declare-fun a_ack!208 () (_ BitVec 32))
+(declare-fun b_ack!207 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvsle a_ack!208 #x00000000)))
+(assert (not (bvslt b_ack!207 #x00000000)))
+(assert (not (bvslt (bvsdiv a_ack!208 #x00000002) b_ack!207)))
+(assert (not (= #x00000000 b_ack!207)))
+(assert (not (= #x00000002 a_ack!208)))
+(assert (not (bvslt a_ack!208 #x00000015)))
+(assert (= #x00000001 b_ack!207))
+(assert (bvslt #x00000032 a_ack!208))
+(assert (not (= #x00000000 (bvand a_ack!208 #x00000001))))
+(assert (FPCHECK_FADD_ACCURACY
+  ((_ to_fp 11 53) roundNearestTiesToEven (bvmul #x00000002 a_ack!208))
+  #x3ff0000000000000))
+
+(check-sat)
+(exit)

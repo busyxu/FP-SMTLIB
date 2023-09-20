@@ -1,0 +1,11 @@
+(declare-fun a_ack!33 () (_ BitVec 32))
+(declare-fun b_ack!32 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!33 #xffffffff)))
+(assert (= #xffffffff a_ack!33))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!32) ((_ to_fp 11 53) #xc086232bdd7abcd2))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!32) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FSUB_UNDERFLOW #x8000000000000000 b_ack!32))
+
+(check-sat)
+(exit)

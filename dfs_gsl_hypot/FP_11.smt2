@@ -1,0 +1,11 @@
+(declare-fun a_ack!147 () (_ BitVec 64))
+(declare-fun b_ack!146 () (_ BitVec 64))
+(assert (let ((a!1 ((_ extract 0 0)
+             (ite (fp.isInfinite ((_ to_fp 11 53) a_ack!147)) #x01 #x00))))
+  (not (= a!1 #b1))))
+(assert (let ((a!1 ((_ extract 0 0)
+             (ite (fp.isInfinite ((_ to_fp 11 53) b_ack!146)) #x01 #x00))))
+  (= a!1 #b1)))
+
+(check-sat)
+(exit)

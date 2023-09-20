@@ -1,0 +1,10 @@
+(declare-fun a_ack!86 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun b_ack!85 () (_ BitVec 64))
+(assert (not (bvslt a_ack!86 #x00000000)))
+(assert (not (= #x00000000 a_ack!86)))
+(assert (= #x00000001 a_ack!86))
+(assert (FPCHECK_FADD_OVERFLOW #x3ff0000000000000 b_ack!85))
+
+(check-sat)
+(exit)

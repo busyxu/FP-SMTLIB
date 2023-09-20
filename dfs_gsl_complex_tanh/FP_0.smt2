@@ -1,0 +1,7 @@
+(declare-fun x_ack!4 () (_ BitVec 64))
+(declare-fun CF_sinh ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(assert (fp.lt (fp.abs ((_ to_fp 11 53) x_ack!4)) ((_ to_fp 11 53) #x3ff0000000000000)))
+(assert (not (fp.eq (CF_sinh x_ack!4) ((_ to_fp 11 53) #x0000000000000000))))
+
+(check-sat)
+(exit)

@@ -1,0 +1,12 @@
+(declare-fun n_ack!129 () (_ BitVec 32))
+(declare-fun a_ack!130 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (= #x00000000 (bvsrem n_ack!129 #x00000002))))
+(assert (not (= #x00000000 n_ack!129)))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!130) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (bvslt n_ack!129 #x00000000))
+(assert (fp.lt ((_ to_fp 11 53) a_ack!130) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FSUB_UNDERFLOW #x8000000000000000 a_ack!130))
+
+(check-sat)
+(exit)

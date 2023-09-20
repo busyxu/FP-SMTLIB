@@ -1,0 +1,13 @@
+(declare-fun a_ack!2078 () (_ BitVec 32))
+(declare-fun b_ack!2076 () (_ BitVec 32))
+(declare-fun FPCHECK_FMUL_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun c_ack!2077 () (_ BitVec 64))
+(assert (not (bvslt a_ack!2078 #x00000000)))
+(assert (not (bvslt b_ack!2076 #x00000000)))
+(assert (not (= #x00000000 a_ack!2078)))
+(assert (= #x00000001 a_ack!2078))
+(assert (bvsle #x00000002 b_ack!2076))
+(assert (FPCHECK_FMUL_UNDERFLOW #x3ff0000000000000 c_ack!2077))
+
+(check-sat)
+(exit)

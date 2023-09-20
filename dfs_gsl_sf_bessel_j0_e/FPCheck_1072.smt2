@@ -1,0 +1,16 @@
+(declare-fun a_ack!1586 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(declare-fun CF_sin ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun CF_cos ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) a_ack!1586))
+            ((_ to_fp 11 53) #x3e60000000000000))))
+(assert (not (fp.leq (fp.abs ((_ to_fp 11 53) a_ack!1586))
+             ((_ to_fp 11 53) #x4010000000000000))))
+(assert (let ((a!1 (fp.abs (CF_cos (fp.abs ((_ to_fp 11 53) a_ack!1586)))))
+      (a!2 (fp.abs (CF_sin (fp.abs ((_ to_fp 11 53) a_ack!1586))))))
+  (FPCHECK_FADD_UNDERFLOW a!1 a!2)))
+
+(check-sat)
+(exit)

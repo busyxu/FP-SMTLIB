@@ -1,0 +1,18 @@
+(declare-fun b_ack!1215 () (_ BitVec 32))
+(declare-fun a_ack!1216 () (_ BitVec 32))
+(assert (not (bvslt b_ack!1215 #x00000000)))
+(assert (not (bvslt a_ack!1216 #x00000000)))
+(assert (not (= #x00000000 a_ack!1216)))
+(assert (not (bvslt b_ack!1215 a_ack!1216)))
+(assert (not (= b_ack!1215 a_ack!1216)))
+(assert (not (= b_ack!1215 (bvadd #x00000001 a_ack!1216))))
+(assert (not (bvslt a_ack!1216 #x00000000)))
+(assert (not (= #x00000000 (bvand a_ack!1216 #x00000001))))
+(assert (= #x00000000
+   (ite (= ((_ extract 31 31) a_ack!1216) #b1)
+        (concat #b1 ((_ extract 31 1) a_ack!1216))
+        (concat #b0 ((_ extract 31 1) a_ack!1216)))))
+(assert (not (bvult a_ack!1216 #x00000012)))
+
+(check-sat)
+(exit)

@@ -1,0 +1,36 @@
+(declare-fun x_ack!2718 () (_ BitVec 64))
+(declare-fun nu1_ack!2716 () (_ BitVec 64))
+(declare-fun nu2_ack!2717 () (_ BitVec 64))
+(assert (not (fp.geq ((_ to_fp 11 53) x_ack!2718) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.leq ((_ to_fp 11 53) x_ack!2718) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!2718) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!2718) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) nu2_ack!2717) ((_ to_fp 11 53) #x40f86a0000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) nu2_ack!2717) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) nu2_ack!2717) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.gt ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.gt ((_ to_fp 11 53) nu2_ack!2717) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.gt ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) nu2_ack!2717)))
+(assert (not (fp.lt ((_ to_fp 11 53) nu1_ack!2716) ((_ to_fp 11 53) nu2_ack!2717))))
+(assert (not (fp.lt (fp.div roundNearestTiesToEven
+                    ((_ to_fp 11 53) nu2_ack!2717)
+                    ((_ to_fp 11 53) nu1_ack!2716))
+            ((_ to_fp 11 53) #x3fc999999999999a))))
+(assert (fp.eq (fp.sub roundNearestTiesToEven
+               (fp.add roundNearestTiesToEven
+                       ((_ to_fp 11 53) nu1_ack!2716)
+                       ((_ to_fp 11 53) nu2_ack!2717))
+               ((_ to_fp 11 53) nu1_ack!2716))
+       ((_ to_fp 11 53) nu2_ack!2717)))
+(assert (fp.eq (fp.sub roundNearestTiesToEven
+               (fp.add roundNearestTiesToEven
+                       ((_ to_fp 11 53) nu1_ack!2716)
+                       ((_ to_fp 11 53) nu2_ack!2717))
+               ((_ to_fp 11 53) nu2_ack!2717))
+       ((_ to_fp 11 53) nu1_ack!2716)))
+
+(check-sat)
+(exit)

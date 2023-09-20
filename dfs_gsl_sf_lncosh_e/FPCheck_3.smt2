@@ -1,0 +1,10 @@
+(declare-fun a_ack!7 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_OVERFLOW ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) a_ack!7))
+            ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) a_ack!7))
+            ((_ to_fp 11 53) #x403205966f2b4f12))))
+(assert (FPCHECK_FADD_OVERFLOW #xbfe62e42fefa39ef (fp.abs ((_ to_fp 11 53) a_ack!7))))
+
+(check-sat)
+(exit)

@@ -1,0 +1,11 @@
+(declare-fun a_ack!339 () (_ BitVec 32))
+(declare-fun b_ack!338 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!339 #xffffffff)))
+(assert (= #xffffffff a_ack!339))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!338) ((_ to_fp 11 53) #xc086232bdd7abcd2))))
+(assert (fp.lt ((_ to_fp 11 53) b_ack!338) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FADD_ACCURACY (fp.abs ((_ to_fp 11 53) b_ack!338)) #x3ff0000000000000))
+
+(check-sat)
+(exit)

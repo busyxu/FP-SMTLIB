@@ -1,0 +1,22 @@
+(declare-fun q_ack!225 () (_ BitVec 64))
+(declare-fun j_ack!226 () (_ BitVec 32))
+(declare-fun n_ack!224 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(assert (not (fp.leq ((_ to_fp 11 53) q_ack!225) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt j_ack!226 #x00000001)))
+(assert (not (bvslt #x00000002 j_ack!226)))
+(assert (= #x00000000 (bvsrem n_ack!224 #x00000002)))
+(assert (= #x00000000 (bvsrem n_ack!224 #x00000002)))
+(assert (not (fp.eq ((_ to_fp 11 53) q_ack!225) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt n_ack!224 #x00000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) q_ack!225) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvslt n_ack!224 #x00000000)))
+(assert (= #x00000000 n_ack!224))
+(assert (fp.leq ((_ to_fp 11 53) q_ack!225) ((_ to_fp 11 53) #x4010000000000000)))
+(assert (= #x00000000 n_ack!224))
+(assert (FPCHECK_FADD_ACCURACY
+  #x0000000000000000
+  ((_ to_fp 11 53) roundNearestTiesToEven (bvmul n_ack!224 n_ack!224))))
+
+(check-sat)
+(exit)

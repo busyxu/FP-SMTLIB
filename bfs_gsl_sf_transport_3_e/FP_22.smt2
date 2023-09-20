@@ -1,0 +1,16 @@
+(declare-fun a_ack!182 () (_ BitVec 64))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!182) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) a_ack!182) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!182) ((_ to_fp 11 53) #x3e68000000000000))))
+(assert (not (fp.leq ((_ to_fp 11 53) a_ack!182) ((_ to_fp 11 53) #x4010000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) a_ack!182) ((_ to_fp 11 53) #x404205966f2b4f12)))
+(assert (let ((a!1 (bvadd #x00000001
+                  ((_ fp.to_sbv 32)
+                    roundTowardZero
+                    (fp.div roundNearestTiesToEven
+                            ((_ to_fp 11 53) #x404205966f2b4f12)
+                            ((_ to_fp 11 53) a_ack!182))))))
+  (bvsle #x00000001 a!1)))
+
+(check-sat)
+(exit)

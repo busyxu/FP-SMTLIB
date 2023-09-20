@@ -1,0 +1,6 @@
+(declare-fun x_ack!16 () (_ BitVec 32))
+(assert (fp.lt ((_ to_fp 11 53) roundNearestTiesToEven x_ack!16)
+       ((_ to_fp 11 53) #x0000000000000000)))
+
+(check-sat)
+(exit)

@@ -1,0 +1,26 @@
+(declare-fun a_ack!2391 () (_ BitVec 64))
+(declare-fun b_ack!2390 () (_ BitVec 32))
+(declare-fun FPCHECK_FINVALID_POW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.leq ((_ to_fp 11 53) a_ack!2391) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (= #x00000000 b_ack!2390)))
+(assert (not (fp.lt ((_ to_fp 11 53) a_ack!2391) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (= #x00000001 b_ack!2390)))
+(assert (not (bvule b_ack!2390 #x0000000a)))
+(assert (not (fp.gt ((_ to_fp_unsigned 11 53) roundNearestTiesToEven b_ack!2390)
+            (fp.mul roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x3fe0000000000000)
+                    ((_ to_fp 11 53) a_ack!2391)))))
+(assert (not (fp.gt ((_ to_fp_unsigned 11 53) roundNearestTiesToEven b_ack!2390)
+            (fp.mul roundNearestTiesToEven
+                    ((_ to_fp 11 53) #x4000000000000000)
+                    ((_ to_fp 11 53) a_ack!2391)))))
+(assert (not (bvult b_ack!2390 #x00000001)))
+(assert (bvult (concat #x00000000 b_ack!2390) #x0000000000000065))
+(assert (bvult #x0000000000000000
+       (bvmul #x0000000000000008 (concat #x00000000 b_ack!2390))))
+(assert (bvult (bvmul #x0000000000000008 (concat #x00000000 b_ack!2390))
+       #x0000000000000321))
+(assert (FPCHECK_FINVALID_POW a_ack!2391 a_ack!2391))
+
+(check-sat)
+(exit)

@@ -1,0 +1,21 @@
+(declare-fun a_ack!3209 () (_ BitVec 64))
+(declare-fun b_ack!3208 () (_ BitVec 64))
+(declare-fun CF_floor ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FADD_ACCURACY ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!3208))
+       (fp.mul roundNearestTiesToEven
+               ((_ to_fp 11 53) #x3fb999999999999a)
+               (fp.abs ((_ to_fp 11 53) a_ack!3209)))))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!3208) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) a_ack!3209) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.leq ((_ to_fp 11 53) a_ack!3209) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.eq ((_ to_fp 11 53) a_ack!3209) (CF_floor a_ack!3209)))
+(assert (fp.lt (fp.add roundNearestTiesToEven
+               ((_ to_fp 11 53) a_ack!3209)
+               ((_ to_fp 11 53) b_ack!3208))
+       ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.eq ((_ to_fp 11 53) b_ack!3208) (CF_floor b_ack!3208))))
+(assert (FPCHECK_FADD_ACCURACY a_ack!3209 b_ack!3208))
+
+(check-sat)
+(exit)

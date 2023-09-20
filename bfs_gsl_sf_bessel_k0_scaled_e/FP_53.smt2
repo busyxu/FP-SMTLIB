@@ -1,0 +1,48 @@
+(declare-fun a_ack!519 () (_ BitVec 64))
+(assert (not (fp.leq ((_ to_fp 11 53) a_ack!519) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) a_ack!519) ((_ to_fp 11 53) #x3ff0000000000000)))
+(assert (not (fp.eq (fp.abs ((_ to_fp 11 53) a_ack!519))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.eq (fp.div roundNearestTiesToEven
+               (fp.mul roundNearestTiesToEven
+                       ((_ to_fp 11 53) a_ack!519)
+                       ((_ to_fp 11 53) a_ack!519))
+               ((_ to_fp 11 53) a_ack!519))
+       ((_ to_fp 11 53) a_ack!519)))
+(assert (not (fp.eq (fp.abs ((_ to_fp 11 53) a_ack!519))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.eq (fp.div roundNearestTiesToEven
+               (fp.mul roundNearestTiesToEven
+                       ((_ to_fp 11 53) a_ack!519)
+                       ((_ to_fp 11 53) a_ack!519))
+               ((_ to_fp 11 53) a_ack!519))
+       ((_ to_fp 11 53) a_ack!519)))
+(assert (let ((a!1 (fp.eq (fp.abs (fp.mul roundNearestTiesToEven
+                                  ((_ to_fp 11 53) a_ack!519)
+                                  ((_ to_fp 11 53) a_ack!519)))
+                  ((_ to_fp 11 53) #x0000000000000000))))
+  (not a!1)))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.mul roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) a_ack!519)
+                                   ((_ to_fp 11 53) a_ack!519))
+                           ((_ to_fp 11 53) #x3d9d141fcb837472))
+                   (fp.mul roundNearestTiesToEven
+                           ((_ to_fp 11 53) a_ack!519)
+                           ((_ to_fp 11 53) a_ack!519)))))
+  (fp.eq a!1 ((_ to_fp 11 53) #x3d9d141fcb837472))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (fp.mul roundNearestTiesToEven
+                           (fp.mul roundNearestTiesToEven
+                                   ((_ to_fp 11 53) a_ack!519)
+                                   ((_ to_fp 11 53) a_ack!519))
+                           ((_ to_fp 11 53) #x3d9d141fcb837472))
+                   ((_ to_fp 11 53) #x3d9d141fcb837472))))
+  (fp.eq a!1
+         (fp.mul roundNearestTiesToEven
+                 ((_ to_fp 11 53) a_ack!519)
+                 ((_ to_fp 11 53) a_ack!519)))))
+
+(check-sat)
+(exit)

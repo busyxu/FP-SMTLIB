@@ -1,0 +1,26 @@
+(declare-fun limit_ack!128 () (_ BitVec 64))
+(declare-fun a_ack!129 () (_ BitVec 64))
+(declare-fun b_ack!124 () (_ BitVec 64))
+(declare-fun epsabs_ack!126 () (_ BitVec 64))
+(declare-fun epsrel_ack!127 () (_ BitVec 64))
+(declare-fun c_ack!125 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_ACCURACY ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvult #x00000000000003e8 limit_ack!128)))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!124) ((_ to_fp 11 53) a_ack!129))))
+(assert (fp.leq ((_ to_fp 11 53) epsabs_ack!126) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!127)
+            ((_ to_fp 11 53) #x3d09000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!127)
+            ((_ to_fp 11 53) #x3a0fb0f6be506019))))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!125) ((_ to_fp 11 53) a_ack!129))))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!125) ((_ to_fp 11 53) b_ack!124))))
+(assert (FPCHECK_FSUB_ACCURACY
+  (fp.sub roundNearestTiesToEven
+          (fp.mul roundNearestTiesToEven
+                  ((_ to_fp 11 53) #x4000000000000000)
+                  ((_ to_fp 11 53) c_ack!125))
+          ((_ to_fp 11 53) b_ack!124))
+  a_ack!129))
+
+(check-sat)
+(exit)

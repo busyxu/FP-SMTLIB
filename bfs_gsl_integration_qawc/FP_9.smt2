@@ -1,0 +1,13 @@
+(declare-fun limit_ack!247 () (_ BitVec 64))
+(declare-fun a_ack!248 () (_ BitVec 64))
+(declare-fun b_ack!244 () (_ BitVec 64))
+(declare-fun epsabs_ack!246 () (_ BitVec 64))
+(declare-fun c_ack!245 () (_ BitVec 64))
+(assert (not (bvult #x00000000000003e8 limit_ack!247)))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!244) ((_ to_fp 11 53) a_ack!248))))
+(assert (not (fp.leq ((_ to_fp 11 53) epsabs_ack!246)
+             ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!245) ((_ to_fp 11 53) a_ack!248)))
+
+(check-sat)
+(exit)

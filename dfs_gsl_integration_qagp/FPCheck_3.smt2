@@ -1,0 +1,27 @@
+(declare-fun limit_ack!66 () (_ BitVec 64))
+(declare-fun epsabs_ack!71 () (_ BitVec 64))
+(declare-fun epsrel_ack!65 () (_ BitVec 64))
+(declare-fun a_ack!72 () (_ BitVec 64))
+(declare-fun x1_ack!67 () (_ BitVec 64))
+(declare-fun x2_ack!68 () (_ BitVec 64))
+(declare-fun x3_ack!69 () (_ BitVec 64))
+(declare-fun b_ack!70 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_OVERFLOW ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(assert (not (bvult #x00000000000003e8 limit_ack!66)))
+(assert (fp.leq ((_ to_fp 11 53) epsabs_ack!71) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!65)
+            ((_ to_fp 11 53) #x3d09000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!65)
+            ((_ to_fp 11 53) #x3a0fb0f6be506019))))
+(assert (not (fp.lt ((_ to_fp 11 53) x1_ack!67) ((_ to_fp 11 53) a_ack!72))))
+(assert (not (fp.lt ((_ to_fp 11 53) x2_ack!68) ((_ to_fp 11 53) x1_ack!67))))
+(assert (not (fp.lt ((_ to_fp 11 53) x3_ack!69) ((_ to_fp 11 53) x2_ack!68))))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!70) ((_ to_fp 11 53) x3_ack!69))))
+(assert (FPCHECK_FMUL_OVERFLOW
+  #x3fe0000000000000
+  (fp.add roundNearestTiesToEven
+          ((_ to_fp 11 53) a_ack!72)
+          ((_ to_fp 11 53) x1_ack!67))))
+
+(check-sat)
+(exit)

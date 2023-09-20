@@ -1,0 +1,27 @@
+(declare-fun c_ack!376 () (_ BitVec 64))
+(declare-fun b_ack!375 () (_ BitVec 32))
+(declare-fun a_ack!377 () (_ BitVec 32))
+(declare-fun CF_floor ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun FPCHECK_FADD_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!376) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!376) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (fp.lt ((_ to_fp 11 53) c_ack!376) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (bvslt a_ack!377 b_ack!375)))
+(assert (fp.eq ((_ to_fp 11 53) roundNearestTiesToEven b_ack!375)
+       (CF_floor ((_ to_fp 11 53) roundNearestTiesToEven b_ack!375))))
+(assert (fp.leq ((_ to_fp 11 53) roundNearestTiesToEven b_ack!375)
+        ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.eq ((_ to_fp 11 53) roundNearestTiesToEven a_ack!377)
+       (CF_floor ((_ to_fp 11 53) roundNearestTiesToEven a_ack!377))))
+(assert (fp.leq ((_ to_fp 11 53) roundNearestTiesToEven a_ack!377)
+        ((_ to_fp 11 53) #x0000000000000000)))
+(assert (fp.geq ((_ to_fp 11 53) roundNearestTiesToEven a_ack!377)
+        ((_ to_fp 11 53) roundNearestTiesToEven b_ack!375)))
+(assert (FPCHECK_FADD_UNDERFLOW
+  #x3ff0000000000000
+  ((_ to_fp 11 53) roundNearestTiesToEven a_ack!377)))
+
+(check-sat)
+(exit)

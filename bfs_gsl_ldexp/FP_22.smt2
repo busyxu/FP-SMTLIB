@@ -1,0 +1,26 @@
+(declare-fun x_ack!394 () (_ BitVec 64))
+(declare-fun CF_ceil ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(declare-fun CF_log ((_ FloatingPoint 11 53)) (_ FloatingPoint 11 53))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!394) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.eq ((_ to_fp 11 53) x_ack!394) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (let ((a!1 (or (fp.isNaN (fp.abs ((_ to_fp 11 53) x_ack!394)))
+               (fp.eq (fp.abs ((_ to_fp 11 53) x_ack!394))
+                      ((_ to_fp 11 53) #x7ff0000000000000)))))
+  (not a!1)))
+(assert (not (fp.geq (fp.abs ((_ to_fp 11 53) x_ack!394))
+             ((_ to_fp 11 53) #x3fe0000000000000))))
+(assert (let ((a!1 (fp.div roundNearestTiesToEven
+                   (CF_log (fp.abs ((_ to_fp 11 53) x_ack!394)))
+                   ((_ to_fp 11 53) #x3fe62e42fefa39ef))))
+  (bvslt ((_ fp.to_sbv 32) roundTowardZero (CF_ceil a!1)) #xfffffc03)))
+(assert (let ((a!1 (fp.isNaN (fp.abs (fp.mul roundNearestTiesToEven
+                                     ((_ to_fp 11 53) x_ack!394)
+                                     ((_ to_fp 11 53) #x7fc0000000000000)))))
+      (a!2 (fp.eq (fp.abs (fp.mul roundNearestTiesToEven
+                                  ((_ to_fp 11 53) x_ack!394)
+                                  ((_ to_fp 11 53) #x7fc0000000000000)))
+                  ((_ to_fp 11 53) #x7ff0000000000000))))
+  (not (not (or a!1 a!2)))))
+
+(check-sat)
+(exit)

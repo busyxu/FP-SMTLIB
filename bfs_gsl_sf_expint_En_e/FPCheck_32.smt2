@@ -1,0 +1,12 @@
+(declare-fun a_ack!127 () (_ BitVec 32))
+(declare-fun b_ack!126 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!127 #x00000000)))
+(assert (not (= #x00000000 a_ack!127)))
+(assert (= #x00000001 a_ack!127))
+(assert (not (fp.lt ((_ to_fp 11 53) b_ack!126) ((_ to_fp 11 53) #xc085eeaad5511c64))))
+(assert (fp.leq ((_ to_fp 11 53) b_ack!126) ((_ to_fp 11 53) #xc024000000000000)))
+(assert (FPCHECK_FSUB_OVERFLOW #x8000000000000000 b_ack!126))
+
+(check-sat)
+(exit)

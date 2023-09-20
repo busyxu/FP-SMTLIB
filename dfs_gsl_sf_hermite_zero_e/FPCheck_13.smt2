@@ -1,0 +1,20 @@
+(declare-fun a_ack!60 () (_ BitVec 32))
+(declare-fun b_ack!59 () (_ BitVec 32))
+(declare-fun FPCHECK_FADD_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ BitVec 64))
+             Bool)
+(assert (not (bvsle a_ack!60 #x00000000)))
+(assert (not (bvslt b_ack!59 #x00000000)))
+(assert (not (bvslt (bvsdiv a_ack!60 #x00000002) b_ack!59)))
+(assert (not (= #x00000000 b_ack!59)))
+(assert (not (= #x00000002 a_ack!60)))
+(assert (not (bvslt a_ack!60 #x00000015)))
+(assert (= #x00000001 b_ack!59))
+(assert (bvslt #x00000032 a_ack!60))
+(assert (not (= #x00000000 (bvand a_ack!60 #x00000001))))
+(assert (FPCHECK_FADD_UNDERFLOW
+  ((_ to_fp 11 53) roundNearestTiesToEven (bvmul #x00000002 a_ack!60))
+  #x3ff0000000000000))
+
+(check-sat)
+(exit)

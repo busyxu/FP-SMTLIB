@@ -1,0 +1,22 @@
+(declare-fun limit_ack!1465 () (_ BitVec 64))
+(declare-fun epsabs_ack!1463 () (_ BitVec 64))
+(declare-fun epsrel_ack!1464 () (_ BitVec 64))
+(declare-fun b_ack!1466 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (bvult #x00000000000003e8 limit_ack!1465)))
+(assert (fp.leq ((_ to_fp 11 53) epsabs_ack!1463) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!1464)
+            ((_ to_fp 11 53) #x3d09000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) epsrel_ack!1464)
+            ((_ to_fp 11 53) #x3a0fb0f6be506019))))
+(assert (let ((a!1 (fp.leq (fp.mul roundNearestTiesToEven
+                           ((_ to_fp 11 53) #x3ff0000000000000)
+                           (fp.sub roundNearestTiesToEven
+                                   ((_ to_fp 11 53) b_ack!1466)
+                                   ((_ to_fp 11 53) #x3ff0000000000000)))
+                   ((_ to_fp 11 53) #x0000000000000000))))
+  (not a!1)))
+(assert (FPCHECK_FSUB_UNDERFLOW b_ack!1466 #x406d2215dca601a3))
+
+(check-sat)
+(exit)

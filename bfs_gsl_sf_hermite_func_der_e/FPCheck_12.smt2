@@ -1,0 +1,18 @@
+(declare-fun a_ack!84 () (_ BitVec 32))
+(declare-fun b_ack!82 () (_ BitVec 32))
+(declare-fun c_ack!83 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_OVERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!84 #x00000000)))
+(assert (not (bvslt b_ack!82 #x00000000)))
+(assert (= #x00000000 a_ack!84))
+(assert (not (bvslt b_ack!82 #x00000000)))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!83) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (= #x00000000 (bvand b_ack!82 #x00000001)))
+(assert (bvslt #x00000001 b_ack!82))
+(assert (let ((a!1 (not (= #x00000000 (bvand (bvsdiv b_ack!82 #x00000002) #x00000001)))))
+  (FPCHECK_FMUL_OVERFLOW
+    (ite a!1 #xbff0000000000000 #x3ff0000000000000)
+    #x3fe6a09e667f3bcd)))
+
+(check-sat)
+(exit)

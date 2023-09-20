@@ -1,0 +1,13 @@
+(declare-fun alpha1_ack!1664 () (_ BitVec 64))
+(declare-fun beta_ack!1665 () (_ BitVec 64))
+(declare-fun mu_ack!1666 () (_ BitVec 32))
+(declare-fun nu_ack!1667 () (_ BitVec 32))
+(assert (not (fp.lt ((_ to_fp 11 53) alpha1_ack!1664)
+            ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) beta_ack!1665)
+            ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (= #x00000000 mu_ack!1666))
+(assert (= #x00000000 nu_ack!1667))
+
+(check-sat)
+(exit)

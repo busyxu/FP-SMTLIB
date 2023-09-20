@@ -1,0 +1,25 @@
+(declare-fun b_ack!849 () (_ BitVec 32))
+(declare-fun a_ack!851 () (_ BitVec 32))
+(declare-fun c_ack!850 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_OVERFLOW ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvslt b_ack!849 #x00000000)))
+(assert (not (bvslt a_ack!851 b_ack!849)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!850) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!850) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (= #x00000000 b_ack!849))
+(assert (not (bvslt a_ack!851 #x00000000)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!850) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!850) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (= #x00000000 a_ack!851)))
+(assert (not (= #x00000001 a_ack!851)))
+(assert (= #x00000002 a_ack!851))
+(assert (FPCHECK_FDIV_OVERFLOW
+  (fp.add roundNearestTiesToEven
+          (fp.mul roundNearestTiesToEven
+                  ((_ to_fp 11 53) #x4000000000000000)
+                  ((_ to_fp 11 53) roundNearestTiesToEven a_ack!851))
+          ((_ to_fp 11 53) #x3ff0000000000000))
+  #x402921fb54442d18))
+
+(check-sat)
+(exit)

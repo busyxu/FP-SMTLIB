@@ -1,0 +1,20 @@
+(declare-fun c_ack!107 () (_ BitVec 64))
+(declare-fun b_ack!106 () (_ BitVec 64))
+(declare-fun a_ack!108 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_OVERFLOW
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!106))
+            (fp.abs ((_ to_fp 11 53) c_ack!107)))))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) a_ack!108))
+            (fp.abs ((_ to_fp 11 53) c_ack!107)))))
+(assert (not (fp.gt (fp.abs ((_ to_fp 11 53) b_ack!106))
+            (fp.abs ((_ to_fp 11 53) c_ack!107)))))
+(assert (not (fp.eq (fp.abs ((_ to_fp 11 53) c_ack!107))
+            ((_ to_fp 11 53) #x0000000000000000))))
+(assert (FPCHECK_FDIV_OVERFLOW
+  (fp.abs ((_ to_fp 11 53) a_ack!108))
+  (fp.abs ((_ to_fp 11 53) c_ack!107))))
+
+(check-sat)
+(exit)

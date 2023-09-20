@@ -1,0 +1,20 @@
+(declare-fun a_ack!2315 () (_ BitVec 32))
+(declare-fun b_ack!2313 () (_ BitVec 32))
+(declare-fun c_ack!2314 () (_ BitVec 64))
+(declare-fun FPCHECK_FMUL_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (bvslt b_ack!2313 a_ack!2315)))
+(assert (not (bvslt a_ack!2315 #x00000000)))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!2314) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (= #x00000000 b_ack!2313))
+(assert (not (fp.lt (fp.abs ((_ to_fp 11 53) c_ack!2314))
+            ((_ to_fp 11 53) #x3e60000000000000))))
+(assert (fp.leq (fp.abs ((_ to_fp 11 53) c_ack!2314))
+        ((_ to_fp 11 53) #x4008000000000000)))
+(assert (FPCHECK_FMUL_UNDERFLOW
+  (fp.abs ((_ to_fp 11 53) c_ack!2314))
+  (fp.abs ((_ to_fp 11 53) c_ack!2314))))
+
+(check-sat)
+(exit)

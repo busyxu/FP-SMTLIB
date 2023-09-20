@@ -1,0 +1,10 @@
+(declare-fun a_ack!6 () (_ BitVec 64))
+(declare-fun x_ack!8 () (_ BitVec 64))
+(declare-fun b_ack!7 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!8) ((_ to_fp 11 53) a_ack!6))))
+(assert (not (fp.gt ((_ to_fp 11 53) x_ack!8) ((_ to_fp 11 53) b_ack!7))))
+(assert (FPCHECK_FSUB_UNDERFLOW b_ack!7 x_ack!8))
+
+(check-sat)
+(exit)

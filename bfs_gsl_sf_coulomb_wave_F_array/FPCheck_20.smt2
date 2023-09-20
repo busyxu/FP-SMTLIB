@@ -1,0 +1,12 @@
+(declare-fun d_ack!106 () (_ BitVec 64))
+(declare-fun b_ack!105 () (_ BitVec 32))
+(declare-fun a_ack!108 () (_ BitVec 64))
+(declare-fun FPCHECK_FDIV_UNDERFLOW ((_ BitVec 64) (_ BitVec 64)) Bool)
+(declare-fun c_ack!107 () (_ BitVec 64))
+(assert (fp.eq ((_ to_fp 11 53) d_ack!106) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (not (bvsle #x00000000 b_ack!105)))
+(assert (fp.eq ((_ to_fp 11 53) a_ack!108) ((_ to_fp 11 53) #x0000000000000000)))
+(assert (FPCHECK_FDIV_UNDERFLOW c_ack!107 #x3ff0000000000000))
+
+(check-sat)
+(exit)

@@ -1,0 +1,16 @@
+(declare-fun a_ack!251 () (_ BitVec 32))
+(declare-fun b_ack!248 () (_ BitVec 32))
+(declare-fun c_ack!249 () (_ BitVec 64))
+(declare-fun d_ack!250 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_OVERFLOW ((_ FloatingPoint 11 53) (_ BitVec 64)) Bool)
+(assert (not (bvslt a_ack!251 #x00000001)))
+(assert (not (bvslt (bvadd #xffffffff a_ack!251) b_ack!248)))
+(assert (not (fp.leq ((_ to_fp 11 53) c_ack!249) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) d_ack!250) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (not (bvule (bvadd a_ack!251 b_ack!248) #x000000aa)))
+(assert (FPCHECK_FADD_OVERFLOW
+  ((_ to_fp_unsigned 11 53) roundNearestTiesToEven (bvadd a_ack!251 b_ack!248))
+  #x3ff0000000000000))
+
+(check-sat)
+(exit)

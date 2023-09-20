@@ -1,0 +1,32 @@
+(declare-fun x1_ack!614 () (_ BitVec 64))
+(declare-fun x0_ack!622 () (_ BitVec 64))
+(declare-fun y0_ack!615 () (_ BitVec 64))
+(declare-fun x_ack!620 () (_ BitVec 64))
+(declare-fun y_ack!621 () (_ BitVec 64))
+(declare-fun FPCHECK_FADD_UNDERFLOW
+             ((_ FloatingPoint 11 53) (_ BitVec 64))
+             Bool)
+(declare-fun z2_ack!618 () (_ BitVec 64))
+(declare-fun z1_ack!617 () (_ BitVec 64))
+(declare-fun z3_ack!619 () (_ BitVec 64))
+(declare-fun z0_ack!616 () (_ BitVec 64))
+(assert (not (fp.geq ((_ to_fp 11 53) x0_ack!622) ((_ to_fp 11 53) x1_ack!614))))
+(assert (not (fp.geq ((_ to_fp 11 53) y0_ack!615) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!620) ((_ to_fp 11 53) x0_ack!622))))
+(assert (not (fp.gt ((_ to_fp 11 53) x_ack!620) ((_ to_fp 11 53) x1_ack!614))))
+(assert (not (fp.lt ((_ to_fp 11 53) y_ack!621) ((_ to_fp 11 53) y0_ack!615))))
+(assert (not (fp.gt ((_ to_fp 11 53) y_ack!621) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (fp.lt ((_ to_fp 11 53) x_ack!620) ((_ to_fp 11 53) x0_ack!622))))
+(assert (not (fp.geq ((_ to_fp 11 53) x_ack!620) ((_ to_fp 11 53) x1_ack!614))))
+(assert (not (fp.lt ((_ to_fp 11 53) y_ack!621) ((_ to_fp 11 53) y0_ack!615))))
+(assert (fp.geq ((_ to_fp 11 53) y_ack!621) ((_ to_fp 11 53) #x3ff0000000000000)))
+(assert (FPCHECK_FADD_UNDERFLOW
+  (fp.sub roundNearestTiesToEven
+          (fp.sub roundNearestTiesToEven
+                  ((_ to_fp 11 53) z0_ack!616)
+                  ((_ to_fp 11 53) z3_ack!619))
+          ((_ to_fp 11 53) z1_ack!617))
+  z2_ack!618))
+
+(check-sat)
+(exit)

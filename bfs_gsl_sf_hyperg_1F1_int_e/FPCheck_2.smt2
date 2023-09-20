@@ -1,0 +1,13 @@
+(declare-fun c_ack!8 () (_ BitVec 64))
+(declare-fun b_ack!7 () (_ BitVec 32))
+(declare-fun a_ack!9 () (_ BitVec 32))
+(declare-fun FPCHECK_FMUL_ACCURACY ((_ BitVec 64) (_ FloatingPoint 11 53)) Bool)
+(declare-fun CF_exp ((_ BitVec 64)) (_ FloatingPoint 11 53))
+(assert (not (fp.eq ((_ to_fp 11 53) c_ack!8) ((_ to_fp 11 53) #x0000000000000000))))
+(assert (= a_ack!9 b_ack!7))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!8) ((_ to_fp 11 53) #x40862e42fefa39ef))))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!8) ((_ to_fp 11 53) #xc086232bdd7abcd2))))
+(assert (FPCHECK_FMUL_ACCURACY #x3cc0000000000000 (fp.abs (CF_exp c_ack!8))))
+
+(check-sat)
+(exit)

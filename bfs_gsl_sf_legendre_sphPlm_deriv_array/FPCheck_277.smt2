@@ -1,0 +1,26 @@
+(declare-fun b_ack!1380 () (_ BitVec 32))
+(declare-fun a_ack!1382 () (_ BitVec 32))
+(declare-fun c_ack!1381 () (_ BitVec 64))
+(declare-fun FPCHECK_FSUB_UNDERFLOW
+             ((_ BitVec 64) (_ FloatingPoint 11 53))
+             Bool)
+(assert (not (bvslt b_ack!1380 #x00000000)))
+(assert (not (bvslt a_ack!1382 b_ack!1380)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!1381) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!1381) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (not (= #x00000000 b_ack!1380)))
+(assert (not (= #x00000001 b_ack!1380)))
+(assert (not (bvslt b_ack!1380 #x00000000)))
+(assert (not (bvslt a_ack!1382 b_ack!1380)))
+(assert (not (fp.lt ((_ to_fp 11 53) c_ack!1381) ((_ to_fp 11 53) #xbff0000000000000))))
+(assert (not (fp.gt ((_ to_fp 11 53) c_ack!1381) ((_ to_fp 11 53) #x3ff0000000000000))))
+(assert (bvslt #x00000000 b_ack!1380))
+(assert (fp.eq ((_ to_fp 11 53) c_ack!1381) ((_ to_fp 11 53) #x3ff0000000000000)))
+(assert (bvsle b_ack!1380 a_ack!1382))
+(assert (not (bvsle (bvadd #x00000001 b_ack!1380) a_ack!1382)))
+(assert (FPCHECK_FSUB_UNDERFLOW
+  #x3ff0000000000000
+  (fp.abs ((_ to_fp 11 53) c_ack!1381))))
+
+(check-sat)
+(exit)
